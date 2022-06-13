@@ -7,3 +7,7 @@ extension StringCasingExtension on String {
       .map((str) => str.toCapitalized())
       .join(' ');
 }
+
+extension EnumToString on Enum {
+  String getTitle() => (this).toString().split('.').last.toCapitalized();
+}
