@@ -1,4 +1,4 @@
-import 'package:artefaqt/components/CustomAppBar.dart';
+import 'package:artefaqt/components/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class DetailView extends StatelessWidget {

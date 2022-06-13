@@ -1,10 +1,12 @@
-import 'package:artefaqt/components/custom_drawer.dart';
+import 'package:artefaqt/components/drawer.dart';
 import 'package:artefaqt/model.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:artefaqt/components/CustomAppBar.dart';
+import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/utils.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+import '../blocs/bloc/categories_bloc.dart';
 
 class MainView extends StatelessWidget {
   const MainView({Key? key}) : super(key: key);
@@ -34,19 +36,24 @@ class MainView extends StatelessWidget {
         appBar: const CustomAppBar(
           showMenuButton: true,
         ),
-        body: ListView.separated(
-          padding: const EdgeInsets.all(8),
-          itemCount: entries.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-                onTap: (() {
-                  Navigator.pushNamed(context, '/detail');
-                }),
-                child:
-                    ListTile(title: Text('$selectedTitle ${entries[index]}')));
+        body: BlocBuilder<CategoriesBloc, CategoriesState>(
+          builder: (context, state) {
+            return ListView.separated(
+              padding: const EdgeInsets.all(8),
+              itemCount: entries.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                    onTap: (() {
+                      Navigator.pushNamed(context, '/detail');
+                    }),
+                    child: ListTile(
+                        title: Text(
+                            '${state.selectedCategory.getTitle()} ${entries[index]}')));
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(),
+            );
           },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
         ));
   }
 }

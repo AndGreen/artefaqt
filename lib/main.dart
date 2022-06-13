@@ -1,38 +1,15 @@
 import 'package:artefaqt/blocs/bloc/categories_bloc.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:artefaqt/screens/detail_view.dart';
+import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'package:artefaqt/screens/main_view.dart';
+import 'package:artefaqt/screens/main.dart';
 
 void main() => runApp(const MyApp());
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => MyAppWidget();
-}
-
-class MyAppWidget extends State<MyApp> {
-  double _rotation = 0;
-
-  @override
-  void initState() {
-    _rotation = 0;
-    _updateRotation();
-    super.initState();
-  }
-
-  void _updateRotation() {
-    Timer.periodic(const Duration(milliseconds: 1000), (timer) {
-      setState(() {
-        _rotation += 0.1;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

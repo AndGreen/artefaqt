@@ -35,17 +35,12 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         leading: GestureDetector(
             onTap: () {
               Scaffold.of(context).openDrawer();
-              // showDialog(
-              //     context: context,
-              //     builder: (context) {
-              //       return AlertDialog(title: const Text('123'));
-              //     });
             },
             child: const Icon(Ionicons.menu_outline)),
         middle: BlocBuilder<CategoriesBloc, CategoriesState>(
           builder: (context, state) {
             return Text(
-              state.selectedCategory.toString().split('.').last.toCapitalized(),
+              state.selectedCategory.getTitle(),
               style: const TextStyle(color: Colors.white),
             );
           },

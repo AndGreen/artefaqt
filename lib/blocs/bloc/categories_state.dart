@@ -6,7 +6,7 @@ class CategoriesState extends Equatable {
   const CategoriesState({required this.selectedCategory});
 
   factory CategoriesState.initial() =>
-      const CategoriesState(selectedCategory: Categories.series);
+      const CategoriesState(selectedCategory: Categories.movies);
 
   @override
   List<Object> get props => [selectedCategory];

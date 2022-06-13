@@ -10,7 +10,7 @@ part 'categories_state.dart';
 class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   CategoriesBloc() : super(CategoriesState.initial()) {
     on<ChangeCategoriesEvent>((event, emit) {
-      emit(const CategoriesState(selectedCategory: Categories.movies));
+      emit(CategoriesState(selectedCategory: event.category));
     });
   }
 }
