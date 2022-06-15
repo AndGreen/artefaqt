@@ -8,8 +8,8 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../blocs/bloc/categories_bloc.dart';
 
-class MainView extends StatelessWidget {
-  const MainView({Key? key}) : super(key: key);
+class HomeView extends StatelessWidget {
+  const HomeView({Key? key}) : super(key: key);
 
   static List<String> entries = <String>['A', 'B', 'C'];
   static List<int> colorCodes = <int>[600, 500, 100];

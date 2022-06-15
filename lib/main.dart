@@ -4,7 +4,7 @@ import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'package:artefaqt/screens/main.dart';
+import 'package:artefaqt/screens/home.dart';
 
 void main() => runApp(const MyApp());
 
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
                 case '/':
                   return MaterialWithModalsPageRoute(
                       settings: settings,
-                      builder: (context) => const MainView());
+                      builder: (context) => const HomeView());
 
                 case "/modal":
                   return MaterialPageRoute(
