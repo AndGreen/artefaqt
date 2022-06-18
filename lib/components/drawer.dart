@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:provider/provider.dart';
 
 import '../model.dart';
 
@@ -19,17 +19,17 @@ Builder _tile(
               fontWeight: FontWeight.w500,
               fontSize: 15,
             )),
-        trailing: context.watch<AppModel>().selectedCategory == category
+        trailing: context.watch<AppState>().selectedCategory == category
             ? const Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
               )
             : const Spacer(),
-        selected: context.watch<AppModel>().selectedCategory == category,
+        selected: context.watch<AppState>().selectedCategory == category,
         selectedColor: Colors.white,
         selectedTileColor: Colors.grey[800],
         onTap: () {
-          context.read<AppModel>().updateSelectedCategory(category);
+          context.read<AppState>().updateSelectedCategory(category);
           Scaffold.of(context).closeDrawer();
         },
         leading: Icon(

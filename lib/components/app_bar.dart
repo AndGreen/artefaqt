@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
               },
               child: const Icon(Ionicons.menu_outline)),
           middle: Text(
-            context.watch<AppModel>().selectedCategory.getTitle(),
+            context.watch<AppState>().selectedCategory.getTitle(),
             style: const TextStyle(color: Colors.white),
           ));
     }

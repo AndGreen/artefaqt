@@ -6,10 +6,9 @@ import 'package:artefaqt/utils.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+class ListScreen extends StatelessWidget {
+  const ListScreen({Key? key}) : super(key: key);
 
-  static List<String> entries = <String>['A', 'B', 'C'];
   static List<int> colorCodes = <int>[600, 500, 100];
 
   static Categories selectedCategory = Categories.series;
@@ -36,7 +35,7 @@ class HomeView extends StatelessWidget {
         ),
         body: ListView.separated(
           padding: const EdgeInsets.all(8),
-          itemCount: entries.length,
+          itemCount: context.watch<AppState>().selectedItems.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
                 onTap: (() {
@@ -44,7 +43,7 @@ class HomeView extends StatelessWidget {
                 }),
                 child: ListTile(
                     title: Text(
-                        '${context.watch<AppModel>().selectedCategory.getTitle()} ${entries[index]}')));
+                        context.watch<AppState>().selectedItems[index].title)));
           },
           separatorBuilder: (BuildContext context, int index) =>
               const Divider(),

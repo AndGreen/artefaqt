@@ -3,14 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
-class DetailView extends StatefulWidget {
-  const DetailView({Key? key}) : super(key: key);
+class DetailScreen extends StatefulWidget {
+  const DetailScreen({Key? key}) : super(key: key);
 
   @override
-  State<DetailView> createState() => _DetailViewState();
+  State<DetailScreen> createState() => _DetailScreenState();
 }
 
-class _DetailViewState extends State<DetailView> {
+class _DetailScreenState extends State<DetailScreen> {
   late RiveAnimationController _controller;
   late RiveAnimationController _jumpController;
 

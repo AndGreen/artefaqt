@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'package:artefaqt/screens/home.dart';
+import 'package:artefaqt/screens/list.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (context) => AppModel(),
+        create: (context) => AppState(),
         child: MaterialApp(
             title: 'welcome',
             debugShowCheckedModeBanner: false,
@@ -23,18 +23,18 @@ class MyApp extends StatelessWidget {
                 case '/':
                   return MaterialWithModalsPageRoute(
                       settings: settings,
-                      builder: (context) => const HomeView());
+                      builder: (context) => const ListScreen());
 
                 case "/modal":
                   return MaterialPageRoute(
-                      builder: (context) => const DetailView(),
+                      builder: (context) => const DetailScreen(),
                       fullscreenDialog: true);
               }
               return null;
             },
             routes: <String, WidgetBuilder>{
               // '/': (context) => const CupertinoScaffold(body: MainView()),
-              '/detail': (context) => const DetailView()
+              '/detail': (context) => const DetailScreen()
             },
             theme: ThemeData(
               primaryColor: Colors.green,
