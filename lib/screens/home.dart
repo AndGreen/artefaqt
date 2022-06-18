@@ -3,10 +3,8 @@ import 'package:artefaqt/model.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/utils.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
-import '../blocs/bloc/categories_bloc.dart';
+import 'package:provider/provider.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -36,24 +34,20 @@ class HomeView extends StatelessWidget {
         appBar: const CustomAppBar(
           showMenuButton: true,
         ),
-        body: BlocBuilder<CategoriesBloc, CategoriesState>(
-          builder: (context, state) {
-            return ListView.separated(
-              padding: const EdgeInsets.all(8),
-              itemCount: entries.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                    onTap: (() {
-                      Navigator.pushNamed(context, '/detail');
-                    }),
-                    child: ListTile(
-                        title: Text(
-                            '${state.selectedCategory.getTitle()} ${entries[index]}')));
-              },
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-            );
+        body: ListView.separated(
+          padding: const EdgeInsets.all(8),
+          itemCount: entries.length,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+                onTap: (() {
+                  Navigator.pushNamed(context, '/detail');
+                }),
+                child: ListTile(
+                    title: Text(
+                        '${context.watch<AppModel>().selectedCategory.getTitle()} ${entries[index]}')));
           },
+          separatorBuilder: (BuildContext context, int index) =>
+              const Divider(),
         ));
   }
 }

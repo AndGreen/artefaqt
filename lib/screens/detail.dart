@@ -24,26 +24,24 @@ class _DetailViewState extends State<DetailView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          child: GestureDetector(
-              onTap: () {
-                print('On click!');
-                setState(() {
-                  _jumpController.isActive = true;
-                  _controller.isActive = true;
-                });
-              },
-              child: Center(
-                  child: Transform.scale(
-                      scale: kIsWeb ? 1 : 1.8,
-                      child: RiveAnimation.asset(
-                        'assets/jump-man.riv',
-                        controllers: [_controller, _jumpController],
-                        // animations: ['Run', 'Jump'],
-                        onInit: (_) => setState(() {
-                          _jumpController.isActive = false;
-                        }),
-                      ))))),
+      body: GestureDetector(
+          onTap: () {
+            setState(() {
+              _jumpController.isActive = true;
+              _controller.isActive = true;
+            });
+          },
+          child: Center(
+              child: Transform.scale(
+                  scale: kIsWeb ? 1 : 1.8,
+                  child: RiveAnimation.asset(
+                    'assets/jump-man.riv',
+                    controllers: [_controller, _jumpController],
+                    // animations: ['Run', 'Jump'],
+                    onInit: (_) => setState(() {
+                      _jumpController.isActive = false;
+                    }),
+                  )))),
       appBar: const CustomAppBar(title: 'Detail View'),
     );
   }

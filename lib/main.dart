@@ -1,10 +1,10 @@
-import 'package:artefaqt/blocs/bloc/categories_bloc.dart';
+import 'package:artefaqt/model.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'package:artefaqt/screens/home.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(const MyApp());
 
@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => CategoriesBloc(),
+    return ChangeNotifierProvider(
+        create: (context) => AppModel(),
         child: MaterialApp(
             title: 'welcome',
             debugShowCheckedModeBanner: false,
