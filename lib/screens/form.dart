@@ -1,5 +1,7 @@
+import 'package:artefaqt/model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 const headerHeight = 52.0;
 
@@ -12,6 +14,15 @@ class NewEntityForm extends StatefulWidget {
 
 class _NewEntityFormState extends State<NewEntityForm> {
   final _formKey = GlobalKey<FormState>();
+  String newItemTitle = '';
+
+  late AppState _context;
+
+  @override
+  void didChangeDependencies() {
+    _context = context.read<AppState>();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +59,9 @@ class _NewEntityFormState extends State<NewEntityForm> {
                               prefix: const Text('Title',
                                   style: TextStyle(color: Colors.white)),
                               child: CupertinoTextFormFieldRow(
+                                onChanged: (String? value) {
+                                  newItemTitle = value ?? '';
+                                },
                                 autofocus: true,
                                 placeholder: 'Artefaqt name',
                                 style: const TextStyle(color: Colors.white),
@@ -56,17 +70,34 @@ class _NewEntityFormState extends State<NewEntityForm> {
                     const SizedBox(height: 20),
                     CupertinoButton.filled(
                       onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
                         if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Processing Data'),
+                          final snackBar = SnackBar(
+                            backgroundColor: const Color(0xff262626),
+                            content: const Text(
+                              'All done!',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            action: SnackBarAction(
+                              label: 'Undo',
+                              onPressed: () {
+                                _context.undoLastAddedItem();
+                              },
                             ),
                           );
 
-                          Navigator.of(context).pop();
+                          if (newItemTitle.isNotEmpty) {
+                            var newItem = Item(
+                                title: newItemTitle,
+                                category:
+                                    context.read<AppState>().selectedCategory);
+
+                            context.read<AppState>().addItem(newItem);
+
+                            Navigator.of(context).pop();
+
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
                         }
                       },
                       child: const Text('Add'),

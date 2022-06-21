@@ -30,4 +30,14 @@ class AppState extends ChangeNotifier {
     selectedCategory = category;
     notifyListeners();
   }
+
+  void addItem(Item newItem) {
+    items.add(newItem);
+    notifyListeners();
+  }
+
+  void undoLastAddedItem() {
+    items.removeLast();
+    notifyListeners();
+  }
 }
