@@ -24,22 +24,17 @@ class MyApp extends StatelessWidget {
                   return MaterialWithModalsPageRoute(
                       settings: settings,
                       builder: (context) => const ListScreen());
-
-                case "/modal":
-                  return MaterialPageRoute(
-                      builder: (context) => const DetailScreen(),
-                      fullscreenDialog: true);
               }
               return null;
             },
             routes: <String, WidgetBuilder>{
-              // '/': (context) => const CupertinoScaffold(body: MainView()),
               '/detail': (context) => const DetailScreen()
             },
             theme: ThemeData(
               primaryColor: Colors.green,
+              textTheme:
+                  const TextTheme(bodyText2: TextStyle(color: Colors.white)),
               brightness: Brightness.dark,
             )));
-    // home: const MainView());
   }
 }

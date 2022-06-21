@@ -1,5 +1,6 @@
 import 'package:artefaqt/components/drawer.dart';
 import 'package:artefaqt/model.dart';
+import 'package:artefaqt/screens/form.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/utils.dart';
@@ -24,7 +25,7 @@ class ListScreen extends StatelessWidget {
           onPressed: () {
             showCupertinoModalBottomSheet(
               context: context,
-              builder: (context) => Container(),
+              builder: (context) => const NewEntityForm(),
             );
           },
           child: const Icon(Icons.add),
