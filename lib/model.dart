@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:artefaqt/storage.dart';
 import 'package:flutter/material.dart';
 
 enum Categories { series, movies, books }
@@ -11,6 +12,17 @@ class Item {
     required this.category,
     required this.title,
   });
+
+  Item.fromJson(Map<String, dynamic> json) {
+    category =
+        Categories.values.firstWhere((e) => e.toString() == json['category']);
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() => {
+        'category': category.toString(),
+        'title': title,
+      };
 }
 
 class AppState extends ChangeNotifier {
@@ -18,9 +30,14 @@ class AppState extends ChangeNotifier {
   List<Item> items = [];
 
   AppState() {
-    items
-        .add(Item(category: Categories.series, title: 'How I met your mother'));
-    items.add(Item(category: Categories.series, title: 'House M.D'));
+    restoreStorageItems().then((newItems) {
+      List<Item> updatedItems = [];
+      for (var item in newItems) {
+        updatedItems.add(Item.fromJson(item));
+      }
+      items = updatedItems;
+      notifyListeners();
+    });
   }
 
   get selectedItems =>
@@ -33,11 +50,13 @@ class AppState extends ChangeNotifier {
 
   void addItem(Item newItem) {
     items.add(newItem);
+    updateStorageItems(items);
     notifyListeners();
   }
 
   void undoLastAddedItem() {
     items.removeLast();
+    updateStorageItems(items);
     notifyListeners();
   }
 }
