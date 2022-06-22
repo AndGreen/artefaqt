@@ -88,7 +88,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                       style: TextStyle(color: Colors.white)),
                                   child: RatingBar.builder(
                                     initialRating: 0,
-                                    minRating: 1,
+                                    minRating: 0,
                                     glow: false,
                                     direction: Axis.horizontal,
                                     allowHalfRating: true,

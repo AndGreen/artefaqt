@@ -63,15 +63,23 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addItem(Item newItem) {
-    items.add(newItem);
+  void saveChanges() {
     updateStorageItems(items);
     notifyListeners();
   }
 
+  void addItem(Item newItem) {
+    items.add(newItem);
+    saveChanges();
+  }
+
   void undoLastAddedItem() {
     items.removeLast();
-    updateStorageItems(items);
-    notifyListeners();
+    saveChanges();
+  }
+
+  void removeItem(String id) {
+    items.removeWhere((element) => element.id == id);
+    saveChanges();
   }
 }
