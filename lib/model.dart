@@ -7,21 +7,25 @@ enum Categories { series, movies, books }
 class Item {
   late Categories category;
   late String title;
+  late String comment;
 
   Item({
     required this.category,
     required this.title,
+    required this.comment,
   });
 
   Item.fromJson(Map<String, dynamic> json) {
     category =
         Categories.values.firstWhere((e) => e.toString() == json['category']);
     title = json['title'];
+    comment = json['comment'];
   }
 
   Map<String, dynamic> toJson() => {
         'category': category.toString(),
         'title': title,
+        'comment': comment,
       };
 }
 

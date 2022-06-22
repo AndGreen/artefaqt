@@ -14,7 +14,8 @@ class NewEntityForm extends StatefulWidget {
 
 class _NewEntityFormState extends State<NewEntityForm> {
   final _formKey = GlobalKey<FormState>();
-  String newItemTitle = '';
+  String _title = '';
+  String _comment = '';
 
   late AppState _context;
 
@@ -60,12 +61,26 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                   style: TextStyle(color: Colors.white)),
                               child: CupertinoTextFormFieldRow(
                                 onChanged: (String? value) {
-                                  newItemTitle = value ?? '';
+                                  _title = value ?? '';
                                 },
                                 autofocus: true,
                                 placeholder: 'Artefaqt name',
                                 style: const TextStyle(color: Colors.white),
                               )),
+                          CupertinoFormRow(
+                              prefix: const Text('Comment',
+                                  style: TextStyle(color: Colors.white)),
+                              child: CupertinoTextFormFieldRow(
+                                keyboardType: TextInputType.multiline,
+                                maxLines: 12,
+                                minLines: 1,
+                                onChanged: (String? value) {
+                                  _comment = value ?? '';
+                                },
+                                autofocus: true,
+                                placeholder: 'Your expressions',
+                                style: const TextStyle(color: Colors.white),
+                              ))
                         ]),
                     const SizedBox(height: 20),
                     CupertinoButton.filled(
@@ -85,9 +100,10 @@ class _NewEntityFormState extends State<NewEntityForm> {
                             ),
                           );
 
-                          if (newItemTitle.isNotEmpty) {
+                          if (_title.isNotEmpty) {
                             var newItem = Item(
-                                title: newItemTitle,
+                                title: _title,
+                                comment: _comment,
                                 category:
                                     context.read<AppState>().selectedCategory);
 

@@ -45,7 +45,7 @@ class _DetailScreenState extends State<DetailScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const SizedBox(height: 10),
-                const Text('Description', style: TextStyle(fontSize: 16)),
+                Text(args.item.comment, style: const TextStyle(fontSize: 16)),
                 Align(
                     alignment: Alignment.bottomCenter,
                     child: Transform.scale(
