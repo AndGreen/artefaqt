@@ -32,10 +32,13 @@ class AppState extends ChangeNotifier {
   AppState() {
     restoreStorageItems().then((newItems) {
       List<Item> updatedItems = [];
-      for (var item in newItems) {
-        updatedItems.add(Item.fromJson(item));
+      if (newItems != null && newItems.length > 0) {
+        for (var item in newItems) {
+          updatedItems.add(Item.fromJson(item));
+        }
+        items = updatedItems;
       }
-      items = updatedItems;
+
       notifyListeners();
     });
   }
