@@ -48,8 +48,23 @@ class ListScreen extends StatelessWidget {
                           item: context.read<AppState>().selectedItems[index]));
                 }),
                 child: ListTile(
-                    title: Text(
-                        context.watch<AppState>().selectedItems[index].title)));
+                    title: Row(children: [
+                  Expanded(
+                      child: Text(context
+                          .watch<AppState>()
+                          .selectedItems[index]
+                          .title)),
+                  Row(children: [
+                    Text(context
+                        .watch<AppState>()
+                        .selectedItems[index]
+                        .rating
+                        .toString()),
+                    const Padding(
+                        padding: EdgeInsets.only(left: 6),
+                        child: Icon(Icons.star))
+                  ])
+                ])));
           },
           separatorBuilder: (BuildContext context, int index) =>
               const Divider(),

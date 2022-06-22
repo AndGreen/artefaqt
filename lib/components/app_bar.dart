@@ -21,6 +21,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
         middle: Text(
           title ?? 'artefaqt',
+          overflow: TextOverflow.ellipsis,
           style: const TextStyle(color: Colors.white),
         ),
       );

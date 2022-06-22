@@ -8,11 +8,13 @@ class Item {
   late Categories category;
   late String title;
   late String comment;
+  late double rating;
 
   Item({
     required this.category,
     required this.title,
     required this.comment,
+    required this.rating,
   });
 
   Item.fromJson(Map<String, dynamic> json) {
@@ -20,12 +22,14 @@ class Item {
         Categories.values.firstWhere((e) => e.toString() == json['category']);
     title = json['title'];
     comment = json['comment'];
+    rating = double.parse(json['rating']);
   }
 
   Map<String, dynamic> toJson() => {
         'category': category.toString(),
         'title': title,
         'comment': comment,
+        'rating': rating.toString(),
       };
 }
 

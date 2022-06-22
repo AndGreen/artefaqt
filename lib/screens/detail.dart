@@ -1,6 +1,7 @@
 import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:rive/rive.dart';
 
 class DetailArguments {
@@ -45,6 +46,21 @@ class _DetailScreenState extends State<DetailScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const SizedBox(height: 10),
+                RatingBar.builder(
+                  initialRating: args.item.rating,
+                  minRating: 1,
+                  glow: false,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  ignoreGestures: true,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {},
+                ),
                 Text(args.item.comment, style: const TextStyle(fontSize: 16)),
                 Align(
                     alignment: Alignment.bottomCenter,
