@@ -1,6 +1,15 @@
 import 'package:artefaqt/components/app_bar.dart';
+import 'package:artefaqt/model.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
+
+class DetailArguments {
+  final Item item;
+
+  DetailArguments({
+    required this.item,
+  });
+}
 
 class DetailScreen extends StatefulWidget {
   const DetailScreen({Key? key}) : super(key: key);
@@ -20,22 +29,35 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)?.settings.arguments as DetailArguments;
+
     return Scaffold(
-      body: GestureDetector(
+        appBar: CustomAppBar(
+          title: args.item.title,
+        ),
+        body: GestureDetector(
           onTap: () {
             setState(() {
               _controller?.fire();
             });
           },
-          child: Center(
-              child: Transform.scale(
-                  scale: 1.8,
-                  child: RiveAnimation.asset(
-                    'assets/skins.riv',
-                    fit: BoxFit.cover,
-                    onInit: _onRiveInit,
-                  )))),
-      appBar: const CustomAppBar(title: 'Detail View'),
-    );
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(height: 10),
+                const Text('Description', style: TextStyle(fontSize: 16)),
+                Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Transform.scale(
+                        scale: 3,
+                        child: SizedBox(
+                            height: 300,
+                            child: RiveAnimation.asset(
+                              'assets/skins.riv',
+                              fit: BoxFit.cover,
+                              onInit: _onRiveInit,
+                            ))))
+              ]),
+        ));
   }
 }

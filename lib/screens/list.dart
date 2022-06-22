@@ -1,11 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:artefaqt/screens/detail.dart';
+import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
+
+import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/components/drawer.dart';
 import 'package:artefaqt/model.dart';
 import 'package:artefaqt/screens/form.dart';
-import 'package:flutter/material.dart';
-import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/utils.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:provider/provider.dart';
 
 class ListScreen extends StatelessWidget {
   const ListScreen({Key? key}) : super(key: key);
@@ -40,7 +43,9 @@ class ListScreen extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
                 onTap: (() {
-                  Navigator.pushNamed(context, '/detail');
+                  Navigator.pushNamed(context, '/detail',
+                      arguments: DetailArguments(
+                          item: context.read<AppState>().selectedItems[index]));
                 }),
                 child: ListTile(
                     title: Text(
