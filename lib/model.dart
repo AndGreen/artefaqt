@@ -1,10 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:artefaqt/storage.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 enum Categories { series, movies, books }
 
 class Item {
+  String id = const Uuid().v4();
   late Categories category;
   late String title;
   late String comment;
@@ -18,6 +20,7 @@ class Item {
   });
 
   Item.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     category =
         Categories.values.firstWhere((e) => e.toString() == json['category']);
     title = json['title'];
@@ -26,6 +29,7 @@ class Item {
   }
 
   Map<String, dynamic> toJson() => {
+        'id': id,
         'category': category.toString(),
         'title': title,
         'comment': comment,
