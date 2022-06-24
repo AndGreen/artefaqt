@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 const headerHeight = 52.0;
 
 class NewEntityForm extends StatefulWidget {
-  const NewEntityForm({Key? key}) : super(key: key);
+  final Item? item;
+  const NewEntityForm({Key? key, this.item}) : super(key: key);
 
   @override
   State<NewEntityForm> createState() => _NewEntityFormState();
@@ -20,6 +21,16 @@ class _NewEntityFormState extends State<NewEntityForm> {
   double _rating = 0;
 
   late AppState _context;
+
+  @override
+  void initState() {
+    if (widget.item != null) {
+      _title = widget.item?.title ?? _title;
+      _comment = widget.item?.comment ?? _comment;
+      _rating = widget.item?.rating ?? _rating;
+    }
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
@@ -65,6 +76,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                     onChanged: (String? value) {
                                       _title = value ?? '';
                                     },
+                                    initialValue: _title,
                                     autofocus: true,
                                     placeholder: 'Artefaqt name',
                                     style: const TextStyle(color: Colors.white),
@@ -79,6 +91,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                     onChanged: (String? value) {
                                       _comment = value ?? '';
                                     },
+                                    initialValue: _comment,
                                     autofocus: true,
                                     placeholder: 'Your expressions',
                                     style: const TextStyle(color: Colors.white),
@@ -87,7 +100,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                   prefix: const Text('Raiting',
                                       style: TextStyle(color: Colors.white)),
                                   child: RatingBar.builder(
-                                    initialRating: 0,
+                                    initialRating: _rating,
                                     minRating: 0,
                                     glow: false,
                                     direction: Axis.horizontal,
@@ -123,24 +136,36 @@ class _NewEntityFormState extends State<NewEntityForm> {
                               );
 
                               if (_title.isNotEmpty) {
-                                var newItem = Item(
-                                    title: _title,
-                                    comment: _comment,
-                                    rating: _rating,
-                                    category: context
+                                if (widget.item != null) {
+                                  var updatedItem = widget.item;
+                                  updatedItem?.title = _title;
+                                  updatedItem?.rating = _rating;
+                                  updatedItem?.comment = _comment;
+                                  if (updatedItem != null) {
+                                    context
                                         .read<AppState>()
-                                        .selectedCategory);
+                                        .updateItem(updatedItem);
+                                  }
+                                } else {
+                                  var newItem = Item(
+                                      title: _title,
+                                      comment: _comment,
+                                      rating: _rating,
+                                      category: context
+                                          .read<AppState>()
+                                          .selectedCategory);
 
-                                context.read<AppState>().addItem(newItem);
+                                  context.read<AppState>().addItem(newItem);
+
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                }
 
                                 Navigator.of(context).pop();
-
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
                               }
                             }
                           },
-                          child: const Text('Add'),
+                          child: Text(widget.item != null ? 'Update' : 'Add'),
                         )
                       ])))),
     ));

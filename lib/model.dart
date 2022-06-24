@@ -92,6 +92,12 @@ class AppState extends ChangeNotifier {
     saveChanges();
   }
 
+  void updateItem(Item updatedItem) {
+    items[items.indexWhere((element) => element.id == updatedItem.id)] =
+        updatedItem;
+    saveChanges();
+  }
+
   void undoLastAddedItem() {
     items.removeLast();
     saveChanges();

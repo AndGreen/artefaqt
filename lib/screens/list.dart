@@ -45,6 +45,13 @@ class ListScreen extends StatelessWidget {
             itemCount: context.watch<AppState>().sortedItems.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
+                  onLongPress: () {
+                    showCupertinoModalBottomSheet(
+                      context: context,
+                      builder: (context) => NewEntityForm(
+                          item: context.read<AppState>().sortedItems[index]),
+                    );
+                  },
                   onTap: (() {
                     Navigator.pushNamed(context, '/detail',
                         arguments: DetailArguments(
