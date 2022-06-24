@@ -38,61 +38,65 @@ class ListScreen extends StatelessWidget {
         appBar: const CustomAppBar(
           showMenuButton: true,
         ),
-        body: ListView.separated(
-          // TODO: padding: const EdgeInsets.all(8),
-          itemCount: context.watch<AppState>().selectedItems.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-                onTap: (() {
-                  Navigator.pushNamed(context, '/detail',
-                      arguments: DetailArguments(
-                          item: context.read<AppState>().selectedItems[index]));
-                }),
-                child: Slidable(
-                    key: ValueKey(index),
-                    endActionPane: ActionPane(
-                      extentRatio: 0.25,
-                      motion: const DrawerMotion(),
-                      children: [
-                        SlidableAction(
-                          onPressed: (context) {
-                            var id = context
-                                .read<AppState>()
-                                .selectedItems[index]
-                                .id;
-                            context.read<AppState>().removeItem(id);
-                          },
-                          backgroundColor: const Color(0xFFFE4A49),
-                          foregroundColor: Colors.white,
-                          icon: Icons.delete,
-                          label: 'Delete',
-                        ),
-                      ],
-                    ),
-                    child: ListTile(
-                        title: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(children: [
-                        Expanded(
-                            child: Text(context
+        body: SlidableAutoCloseBehavior(
+          closeWhenOpened: true,
+          closeWhenTapped: true,
+          child: ListView.separated(
+            itemCount: context.watch<AppState>().selectedItems.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                  onTap: (() {
+                    Navigator.pushNamed(context, '/detail',
+                        arguments: DetailArguments(
+                            item:
+                                context.read<AppState>().selectedItems[index]));
+                  }),
+                  child: Slidable(
+                      key: ValueKey(index),
+                      endActionPane: ActionPane(
+                        extentRatio: 0.25,
+                        motion: const DrawerMotion(),
+                        children: [
+                          SlidableAction(
+                            onPressed: (context) {
+                              var id = context
+                                  .read<AppState>()
+                                  .selectedItems[index]
+                                  .id;
+                              context.read<AppState>().removeItem(id);
+                            },
+                            backgroundColor: const Color(0xFFFE4A49),
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'Delete',
+                          ),
+                        ],
+                      ),
+                      child: ListTile(
+                          title: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        child: Row(children: [
+                          Expanded(
+                              child: Text(context
+                                  .watch<AppState>()
+                                  .selectedItems[index]
+                                  .title)),
+                          Row(children: [
+                            Text(context
                                 .watch<AppState>()
                                 .selectedItems[index]
-                                .title)),
-                        Row(children: [
-                          Text(context
-                              .watch<AppState>()
-                              .selectedItems[index]
-                              .rating
-                              .toString()),
-                          const Padding(
-                              padding: EdgeInsets.only(left: 6),
-                              child: Icon(Icons.star))
-                        ])
-                      ]),
-                    ))));
-          },
-          separatorBuilder: (BuildContext context, int index) =>
-              const Divider(),
+                                .rating
+                                .toString()),
+                            const Padding(
+                                padding: EdgeInsets.only(left: 6),
+                                child: Icon(Icons.star))
+                          ])
+                        ]),
+                      ))));
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(height: 1),
+          ),
         ));
   }
 }

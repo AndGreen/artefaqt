@@ -30,8 +30,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           // Try removing opacity to observe the lack of a blur effect and of sliding content.
           backgroundColor: Colors.grey[900],
           trailing: const Icon(
-            Icons.star,
-            size: 25,
+            Icons.calendar_month,
+            size: 20,
           ),
           leading: GestureDetector(
               onTap: () {
