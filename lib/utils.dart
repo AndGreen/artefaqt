@@ -14,7 +14,7 @@ extension EnumToString on Enum {
   String getTitle() => (this).toString().split('.').last.toCapitalized();
 }
 
-extension NextItem on SortModes {
+extension ToogleItem on SortModes {
   SortModes toogle() =>
       SortModes.values[((this).index + 1) % SortModes.values.length];
 }

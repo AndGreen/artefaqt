@@ -13,18 +13,13 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final bool? showMenuButton;
 
   Widget sortModeIcon(SortModes sortMode) {
-    IconData icon;
-    switch (sortMode) {
-      case SortModes.date:
-        icon = Icons.calendar_month;
-        break;
-      case SortModes.alpha:
-        icon = Icons.sort_by_alpha;
-        break;
-      case SortModes.rating:
-        icon = Icons.star;
-    }
-    return Icon(icon, size: 25);
+    Map<SortModes, IconData> icons = {
+      SortModes.date: Icons.calendar_month,
+      SortModes.alpha: Icons.sort_by_alpha,
+      SortModes.rating: Icons.star,
+    };
+
+    return Icon(icons[sortMode], size: 25);
   }
 
   @override
