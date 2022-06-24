@@ -49,8 +49,9 @@ class _NewEntityFormState extends State<NewEntityForm> {
               child: CupertinoNavigationBar(
                 backgroundColor: const Color(0xff262626),
                 leading: Container(),
-                middle: const Text('New artefaqt',
-                    style: TextStyle(color: Colors.white)),
+                middle: Text(
+                    widget.item != null ? 'Edit artefaqt' : 'New artefaqt',
+                    style: const TextStyle(color: Colors.white)),
               ))),
       body: SafeArea(
           child: Form(
