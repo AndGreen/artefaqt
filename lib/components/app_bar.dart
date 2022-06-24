@@ -12,8 +12,25 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final bool? showMenuButton;
 
+  Widget sortModeIcon(SortModes sortMode) {
+    IconData icon;
+    switch (sortMode) {
+      case SortModes.date:
+        icon = Icons.calendar_month;
+        break;
+      case SortModes.alpha:
+        icon = Icons.sort_by_alpha;
+        break;
+      case SortModes.rating:
+        icon = Icons.star;
+    }
+    return Icon(icon, size: 25);
+  }
+
   @override
   Widget build(BuildContext context) {
+    var sortMode = context.watch<AppState>().sortMode;
+
     if (showMenuButton == false) {
       return CupertinoNavigationBar(
         // Try removing opacity to observe the lack of a blur effect and of sliding content.
@@ -29,10 +46,11 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       return CupertinoNavigationBar(
           // Try removing opacity to observe the lack of a blur effect and of sliding content.
           backgroundColor: Colors.grey[900],
-          trailing: const Icon(
-            Icons.calendar_month,
-            size: 20,
-          ),
+          trailing: GestureDetector(
+              onTap: () {
+                context.read<AppState>().changeSortMode(sortMode.toogle());
+              },
+              child: sortModeIcon(sortMode)),
           leading: GestureDetector(
               onTap: () {
                 Scaffold.of(context).openDrawer();

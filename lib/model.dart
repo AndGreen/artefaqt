@@ -5,6 +5,8 @@ import 'package:uuid/uuid.dart';
 
 enum Categories { series, movies, books }
 
+enum SortModes { date, alpha, rating }
+
 class Item {
   String id = const Uuid().v4();
   late Categories category;
@@ -39,6 +41,7 @@ class Item {
 
 class AppState extends ChangeNotifier {
   var selectedCategory = Categories.series;
+  var sortMode = SortModes.date;
   List<Item> items = [];
 
   AppState() {
@@ -55,11 +58,27 @@ class AppState extends ChangeNotifier {
     });
   }
 
-  get selectedItems =>
+  List<Item> get selectedItems =>
       items.where((item) => item.category == selectedCategory).toList();
+
+  List<Item> get sortedItems {
+    switch (sortMode) {
+      case SortModes.date:
+        return selectedItems;
+      case SortModes.alpha:
+        return selectedItems..sort((a, b) => a.title.compareTo(b.title));
+      case SortModes.rating:
+        return selectedItems..sort((a, b) => b.rating.compareTo(a.rating));
+    }
+  }
 
   void updateSelectedCategory(Categories category) {
     selectedCategory = category;
+    notifyListeners();
+  }
+
+  void changeSortMode(SortModes sortBy) {
+    sortMode = sortBy;
     notifyListeners();
   }
 
@@ -69,7 +88,7 @@ class AppState extends ChangeNotifier {
   }
 
   void addItem(Item newItem) {
-    items.add(newItem);
+    items.insert(0, newItem);
     saveChanges();
   }
 

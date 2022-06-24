@@ -1,3 +1,5 @@
+import 'package:artefaqt/model.dart';
+
 extension StringCasingExtension on String {
   String toCapitalized() =>
       length > 0 ? '${this[0].toUpperCase()}${substring(1).toLowerCase()}' : '';
@@ -10,4 +12,9 @@ extension StringCasingExtension on String {
 
 extension EnumToString on Enum {
   String getTitle() => (this).toString().split('.').last.toCapitalized();
+}
+
+extension NextItem on SortModes {
+  SortModes toogle() =>
+      SortModes.values[((this).index + 1) % SortModes.values.length];
 }

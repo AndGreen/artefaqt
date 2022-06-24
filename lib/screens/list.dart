@@ -42,14 +42,13 @@ class ListScreen extends StatelessWidget {
           closeWhenOpened: true,
           closeWhenTapped: true,
           child: ListView.separated(
-            itemCount: context.watch<AppState>().selectedItems.length,
+            itemCount: context.watch<AppState>().sortedItems.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                   onTap: (() {
                     Navigator.pushNamed(context, '/detail',
                         arguments: DetailArguments(
-                            item:
-                                context.read<AppState>().selectedItems[index]));
+                            item: context.read<AppState>().sortedItems[index]));
                   }),
                   child: Slidable(
                       key: ValueKey(index),
@@ -61,7 +60,7 @@ class ListScreen extends StatelessWidget {
                             onPressed: (context) {
                               var id = context
                                   .read<AppState>()
-                                  .selectedItems[index]
+                                  .sortedItems[index]
                                   .id;
                               context.read<AppState>().removeItem(id);
                             },
@@ -79,12 +78,12 @@ class ListScreen extends StatelessWidget {
                           Expanded(
                               child: Text(context
                                   .watch<AppState>()
-                                  .selectedItems[index]
+                                  .sortedItems[index]
                                   .title)),
                           Row(children: [
                             Text(context
                                 .watch<AppState>()
-                                .selectedItems[index]
+                                .sortedItems[index]
                                 .rating
                                 .toString()),
                             const Padding(
