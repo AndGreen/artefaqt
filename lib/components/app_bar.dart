@@ -1,4 +1,4 @@
-import 'package:artefaqt/model.dart';
+import 'package:artefaqt/state.dart';
 import 'package:artefaqt/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';

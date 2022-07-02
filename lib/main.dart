@@ -1,4 +1,4 @@
-import 'package:artefaqt/model.dart';
+import 'package:artefaqt/state.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter/services.dart';

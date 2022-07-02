@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/components/drawer.dart';
-import 'package:artefaqt/model.dart';
+import 'package:artefaqt/state.dart';
 import 'package:artefaqt/screens/form.dart';
 import 'package:artefaqt/utils.dart';
 
