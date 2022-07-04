@@ -1,20 +1,30 @@
 import 'package:artefaqt/store/store.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:artefaqt/screens/list.dart';
+import 'package:path_provider/path_provider.dart';
 
-import 'store/model.dart';
-
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent, // transparent status bar
   ));
-  return runApp(const MyApp());
+  final storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
+  );
+
+  HydratedBlocOverrides.runZoned(
+    () => runApp(const MyApp()),
+    storage: storage,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -23,10 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppStateCubit(GlobalState(
-          items: [],
-          selectedCategory: Categories.books,
-          sortMode: SortModes.alpha)),
+      create: (context) => AppStateCubit(),
       child: MaterialApp(
           title: 'welcome',
           debugShowCheckedModeBanner: false,

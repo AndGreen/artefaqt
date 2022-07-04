@@ -1,47 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:artefaqt/store/storage.dart';
-
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'model.dart';
 
-class GlobalState {
-  late Categories selectedCategory;
-  late SortModes sortMode;
-  late List<Item> items;
-
-  GlobalState({
-    required this.selectedCategory,
-    required this.sortMode,
-    required this.items,
-  });
-
-  GlobalState copyWith({
-    Categories? selectedCategory,
-    SortModes? sortMode,
-    List<Item>? items,
-  }) {
-    return GlobalState(
-      selectedCategory: selectedCategory ?? this.selectedCategory,
-      sortMode: sortMode ?? this.sortMode,
-      items: items ?? this.items,
-    );
-  }
-}
-
-class AppStateCubit extends Cubit<GlobalState> {
-  AppStateCubit(super.initialState) {
-    restoreStorageItems().then((newItems) {
-      List<Item> updatedItems = [];
-
-      if (newItems != null && newItems.length > 0) {
-        for (var item in newItems) {
-          updatedItems.add(Item.fromJson(item));
-        }
-        emit(state.copyWith()..items = updatedItems);
-      }
-    });
-  }
+class AppStateCubit extends HydratedCubit<GlobalState> {
+  AppStateCubit()
+      : super(GlobalState(
+            selectedCategory: Categories.series,
+            sortMode: SortModes.date,
+            items: []));
 
   List<Item> get selectedItems => state.items
       .where((item) => item.category == state.selectedCategory)
@@ -66,28 +32,32 @@ class AppStateCubit extends Cubit<GlobalState> {
     emit(state.copyWith()..sortMode = sortBy);
   }
 
-  _saveChanges(GlobalState newState) {
-    updateStorageItems(newState.items);
-    emit(newState);
-  }
-
   addItem(Item newItem) {
-    _saveChanges(state.copyWith()..items.insert(0, newItem));
+    emit(state.copyWith()..items.insert(0, newItem));
   }
 
   updateItem(Item updatedItem) {
     var newState = state.copyWith();
     newState.items[state.items
         .indexWhere((element) => element.id == updatedItem.id)] = updatedItem;
-    _saveChanges(newState);
+    emit(newState);
   }
 
   undoLastAddedItem() {
-    _saveChanges(state.copyWith()..items.removeLast());
+    emit(state.copyWith()..items.removeLast());
   }
 
   removeItem(String id) {
-    _saveChanges(
-        state.copyWith()..items.removeWhere((element) => element.id == id));
+    emit(state.copyWith()..items.removeWhere((element) => element.id == id));
+  }
+
+  @override
+  GlobalState? fromJson(Map<String, dynamic> json) {
+    return GlobalState.fromJson(json['state']);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(GlobalState state) {
+    return {'state': state.toJson()};
   }
 }

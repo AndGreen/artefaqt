@@ -26,3 +26,25 @@ const _$CategoriesEnumMap = {
   Categories.movies: 'movies',
   Categories.books: 'books',
 };
+
+GlobalState _$GlobalStateFromJson(Map<String, dynamic> json) => GlobalState(
+      selectedCategory:
+          $enumDecode(_$CategoriesEnumMap, json['selectedCategory']),
+      sortMode: $enumDecode(_$SortModesEnumMap, json['sortMode']),
+      items: (json['items'] as List<dynamic>)
+          .map((e) => Item.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$GlobalStateToJson(GlobalState instance) =>
+    <String, dynamic>{
+      'selectedCategory': _$CategoriesEnumMap[instance.selectedCategory],
+      'sortMode': _$SortModesEnumMap[instance.sortMode],
+      'items': instance.items,
+    };
+
+const _$SortModesEnumMap = {
+  SortModes.date: 'date',
+  SortModes.alpha: 'alpha',
+  SortModes.rating: 'rating',
+};
