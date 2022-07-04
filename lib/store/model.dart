@@ -1,9 +1,13 @@
 import 'package:uuid/uuid.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'model.g.dart';
 
 enum Categories { series, movies, books }
 
 enum SortModes { date, alpha, rating }
 
+@JsonSerializable()
 class Item {
   String id = const Uuid().v4();
   late Categories category;
@@ -18,20 +22,6 @@ class Item {
     required this.rating,
   });
 
-  Item.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    category =
-        Categories.values.firstWhere((e) => e.toString() == json['category']);
-    title = json['title'];
-    comment = json['comment'];
-    rating = double.parse(json['rating']);
-  }
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'category': category.toString(),
-        'title': title,
-        'comment': comment,
-        'rating': rating.toString(),
-      };
+  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
+  Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
