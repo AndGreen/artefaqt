@@ -1,8 +1,10 @@
-import 'package:artefaqt/state.dart';
+import 'package:artefaqt/store/store.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
+
+import '../store/model.dart';
 
 const headerHeight = 52.0;
 
@@ -20,7 +22,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
   String _comment = '';
   double _rating = 0;
 
-  late AppState _context;
+  late AppStateCubit _context;
 
   @override
   void initState() {
@@ -34,7 +36,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
 
   @override
   void didChangeDependencies() {
-    _context = context.read<AppState>();
+    _context = context.read<AppStateCubit>();
     super.didChangeDependencies();
   }
 
@@ -143,20 +145,17 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                   updatedItem?.rating = _rating;
                                   updatedItem?.comment = _comment;
                                   if (updatedItem != null) {
-                                    context
-                                        .read<AppState>()
-                                        .updateItem(updatedItem);
+                                    _context.updateItem(updatedItem);
                                   }
                                 } else {
                                   var newItem = Item(
                                       title: _title,
                                       comment: _comment,
                                       rating: _rating,
-                                      category: context
-                                          .read<AppState>()
-                                          .selectedCategory);
+                                      category:
+                                          _context.state.selectedCategory);
 
-                                  context.read<AppState>().addItem(newItem);
+                                  _context.addItem(newItem);
 
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);

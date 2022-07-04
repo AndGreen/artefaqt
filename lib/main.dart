@@ -1,10 +1,12 @@
-import 'package:artefaqt/state.dart';
+import 'package:artefaqt/store/store.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:artefaqt/screens/list.dart';
-import 'package:provider/provider.dart';
+
+import 'store/model.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,28 +22,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => AppState(),
-        child: MaterialApp(
-            title: 'welcome',
-            debugShowCheckedModeBanner: false,
-            onGenerateRoute: (RouteSettings settings) {
-              switch (settings.name) {
-                case '/':
-                  return MaterialWithModalsPageRoute(
-                      settings: settings,
-                      builder: (context) => const ListScreen());
-              }
-              return null;
-            },
-            routes: <String, WidgetBuilder>{
-              '/detail': (context) => const DetailScreen()
-            },
-            theme: ThemeData(
-              primaryColor: Colors.green,
-              textTheme:
-                  const TextTheme(bodyText2: TextStyle(color: Colors.white)),
-              brightness: Brightness.dark,
-            )));
+    return BlocProvider(
+      create: (context) => AppStateCubit(GlobalState(
+          items: [],
+          selectedCategory: Categories.books,
+          sortMode: SortModes.alpha)),
+      child: MaterialApp(
+          title: 'welcome',
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: (RouteSettings settings) {
+            switch (settings.name) {
+              case '/':
+                return MaterialWithModalsPageRoute(
+                    settings: settings,
+                    builder: (context) => const ListScreen());
+            }
+            return null;
+          },
+          routes: <String, WidgetBuilder>{
+            '/detail': (context) => const DetailScreen()
+          },
+          theme: ThemeData(
+            primaryColor: Colors.green,
+            textTheme:
+                const TextTheme(bodyText2: TextStyle(color: Colors.white)),
+            brightness: Brightness.dark,
+          )),
+    );
   }
 }

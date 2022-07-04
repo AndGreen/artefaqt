@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
-import '../state.dart';
+import '../store/model.dart';
+import '../store/store.dart';
 
 class Tile extends StatelessWidget {
   const Tile({
@@ -28,17 +29,19 @@ class Tile extends StatelessWidget {
             fontWeight: FontWeight.w500,
             fontSize: 15,
           )),
-      trailing: context.watch<AppState>().selectedCategory == category
-          ? const Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-            )
-          : const SizedBox.shrink(), // Just empty Widget
-      selected: context.watch<AppState>().selectedCategory == category,
+      trailing:
+          context.watch<AppStateCubit>().state.selectedCategory == category
+              ? const Icon(
+                  Icons.arrow_forward_ios,
+                  size: 16,
+                )
+              : const SizedBox.shrink(), // Just empty Widget
+      selected:
+          context.watch<AppStateCubit>().state.selectedCategory == category,
       selectedColor: Colors.white,
       selectedTileColor: Colors.grey[800],
       onTap: () {
-        context.read<AppState>().updateSelectedCategory(category);
+        context.read<AppStateCubit>().updateSelectedCategory(category);
         Navigator.pop(context);
       },
       leading: Icon(
