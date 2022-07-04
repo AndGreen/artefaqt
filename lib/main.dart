@@ -1,4 +1,5 @@
-import 'package:artefaqt/state.dart';
+import 'package:artefaqt/state/global.dart';
+import 'package:artefaqt/state/items.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter/services.dart';
@@ -20,8 +21,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => AppState(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<GlobalState>(
+            create: (context) => GlobalState(),
+          ),
+          ChangeNotifierProvider<ItemsState>(
+            create: (context) => ItemsState(),
+          )
+        ],
         child: MaterialApp(
             title: 'welcome',
             debugShowCheckedModeBanner: false,

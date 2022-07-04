@@ -1,8 +1,11 @@
-import 'package:artefaqt/state.dart';
+import 'package:artefaqt/state/global.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
+
+import '../models/Item.dart';
+import '../state/items.dart';
 
 const headerHeight = 52.0;
 
@@ -20,7 +23,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
   String _comment = '';
   double _rating = 0;
 
-  late AppState _context;
+  late ItemsState _context;
 
   @override
   void initState() {
@@ -34,7 +37,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
 
   @override
   void didChangeDependencies() {
-    _context = context.read<AppState>();
+    _context = context.read<ItemsState>();
     super.didChangeDependencies();
   }
 
@@ -144,7 +147,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                   updatedItem?.comment = _comment;
                                   if (updatedItem != null) {
                                     context
-                                        .read<AppState>()
+                                        .read<ItemsState>()
                                         .updateItem(updatedItem);
                                   }
                                 } else {
@@ -153,10 +156,10 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                       comment: _comment,
                                       rating: _rating,
                                       category: context
-                                          .read<AppState>()
+                                          .read<GlobalState>()
                                           .selectedCategory);
 
-                                  context.read<AppState>().addItem(newItem);
+                                  context.read<ItemsState>().addItem(newItem);
 
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);

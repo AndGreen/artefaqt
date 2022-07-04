@@ -1,9 +1,11 @@
-import 'package:artefaqt/state.dart';
+import 'package:artefaqt/state/global.dart';
 import 'package:artefaqt/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
+
+import '../models/Item.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   const CustomAppBar({Key? key, this.title, this.showMenuButton = false})
@@ -24,7 +26,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    var sortMode = context.watch<AppState>().sortMode;
+    var sortMode = context.watch<GlobalState>().sortMode;
 
     if (showMenuButton == false) {
       return CupertinoNavigationBar(
@@ -43,7 +45,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           backgroundColor: Colors.grey[900],
           trailing: GestureDetector(
               onTap: () {
-                context.read<AppState>().changeSortMode(sortMode.toogle());
+                context.read<GlobalState>().changeSortMode(sortMode.toogle());
               },
               child: sortModeIcon(sortMode)),
           leading: GestureDetector(
@@ -52,7 +54,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
               },
               child: const Icon(Ionicons.menu_outline)),
           middle: Text(
-            context.watch<AppState>().selectedCategory.getTitle(),
+            context.watch<GlobalState>().selectedCategory.getTitle(),
             style: const TextStyle(color: Colors.white),
           ));
     }

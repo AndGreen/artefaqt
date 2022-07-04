@@ -7,9 +7,11 @@ import 'package:provider/provider.dart';
 
 import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/components/drawer.dart';
-import 'package:artefaqt/state.dart';
 import 'package:artefaqt/screens/form.dart';
 import 'package:artefaqt/utils.dart';
+
+import '../models/Item.dart';
+import '../state/items.dart';
 
 class ListScreen extends StatelessWidget {
   const ListScreen({Key? key}) : super(key: key);
@@ -42,20 +44,25 @@ class ListScreen extends StatelessWidget {
           closeWhenOpened: true,
           closeWhenTapped: true,
           child: ListView.separated(
-            itemCount: context.watch<AppState>().sortedItems.length,
+            itemCount:
+                context.watch<ItemsState>().getSortedItems(context).length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                   onLongPress: () {
                     showCupertinoModalBottomSheet(
                       context: context,
                       builder: (context) => NewEntityForm(
-                          item: context.read<AppState>().sortedItems[index]),
+                          item: context
+                              .read<ItemsState>()
+                              .getSortedItems(context)[index]),
                     );
                   },
                   onTap: (() {
                     Navigator.pushNamed(context, '/detail',
                         arguments: DetailArguments(
-                            item: context.read<AppState>().sortedItems[index]));
+                            item: context
+                                .read<ItemsState>()
+                                .getSortedItems(context)[index]));
                   }),
                   child: Slidable(
                       key: ValueKey(index),
@@ -66,10 +73,10 @@ class ListScreen extends StatelessWidget {
                           SlidableAction(
                             onPressed: (context) {
                               var id = context
-                                  .read<AppState>()
-                                  .sortedItems[index]
+                                  .read<ItemsState>()
+                                  .getSelectedItems(context)[index]
                                   .id;
-                              context.read<AppState>().removeItem(id);
+                              context.read<ItemsState>().removeItem(id);
                             },
                             backgroundColor: const Color(0xFFFE4A49),
                             foregroundColor: Colors.white,
@@ -84,13 +91,13 @@ class ListScreen extends StatelessWidget {
                         child: Row(children: [
                           Expanded(
                               child: Text(context
-                                  .watch<AppState>()
-                                  .sortedItems[index]
+                                  .watch<ItemsState>()
+                                  .getSortedItems(context)[index]
                                   .title)),
                           Row(children: [
                             Text(context
-                                .watch<AppState>()
-                                .sortedItems[index]
+                                .watch<ItemsState>()
+                                .getSelectedItems(context)[index]
                                 .rating
                                 .toString()),
                             const Padding(
