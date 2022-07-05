@@ -1,4 +1,4 @@
-import 'package:artefaqt/models/item.dart';
+import '../models/item.dart';
 
 extension StringCasingExtension on String {
   String toCapitalized() =>
