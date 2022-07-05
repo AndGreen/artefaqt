@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:rive/rive.dart';
 
-import '../models/Item.dart';
+import '../models/item.dart';
 
 class DetailArguments {
   final Item item;

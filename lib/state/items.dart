@@ -2,7 +2,7 @@ import 'package:artefaqt/state/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/Item.dart';
+import '../models/item.dart';
 import 'global.dart';
 
 class ItemsState extends ChangeNotifier {

@@ -10,7 +10,7 @@ import 'package:artefaqt/components/drawer.dart';
 import 'package:artefaqt/screens/form.dart';
 import 'package:artefaqt/utils.dart';
 
-import '../models/Item.dart';
+import '../models/item.dart';
 import '../state/items.dart';
 
 class ListScreen extends StatelessWidget {

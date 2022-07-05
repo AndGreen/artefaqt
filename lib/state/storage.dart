@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/Item.dart';
+import '../models/item.dart';
 
 const storageItemsKeys = 'items';
 

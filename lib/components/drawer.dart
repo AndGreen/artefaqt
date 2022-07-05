@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 
-import '../models/Item.dart';
+import '../models/item.dart';
 import '../state/global.dart';
 
 class Tile extends StatelessWidget {
