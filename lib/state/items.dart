@@ -1,14 +1,17 @@
 import 'package:artefaqt/state/storage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../models/item.dart';
 import 'global.dart';
 
 class ItemsState extends ChangeNotifier {
   List<Item> items = [];
+  late GlobalState _globalState;
 
-  ItemsState() {
+  ItemsState([GlobalState? global]) {
+    if (global != null) {
+      _globalState = global;
+    }
     restoreStorageItems().then((newItems) {
       List<Item> updatedItems = [];
       if (newItems != null && newItems.length > 0) {
@@ -23,12 +26,11 @@ class ItemsState extends ChangeNotifier {
   }
 
   List<Item> getSelectedItems(BuildContext context) => items
-      .where((item) =>
-          item.category == Provider.of<GlobalState>(context).selectedCategory)
+      .where((item) => item.category == _globalState.selectedCategory)
       .toList();
 
   List<Item> getSortedItems(BuildContext context) {
-    switch (Provider.of<GlobalState>(context).sortMode) {
+    switch (_globalState.sortMode) {
       case SortModes.date:
         return getSelectedItems(context);
       case SortModes.alpha:

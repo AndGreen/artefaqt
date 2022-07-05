@@ -26,8 +26,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<GlobalState>(
             create: (context) => GlobalState(),
           ),
-          ChangeNotifierProvider<ItemsState>(
+          ChangeNotifierProxyProvider<GlobalState, ItemsState>(
             create: (context) => ItemsState(),
+            update: (context, state, previous) => ItemsState(state),
           )
         ],
         child: MaterialApp(
