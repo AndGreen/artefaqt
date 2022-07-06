@@ -1,18 +1,39 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
 part 'item.g.dart';
 
-enum Categories { series, movies, books }
+@HiveType(typeId: 1)
+enum Categories {
+  @HiveField(0)
+  series,
+  @HiveField(1)
+  movies,
+  @HiveField(2)
+  books
+}
 
-enum SortModes { date, alpha, rating }
+@HiveType(typeId: 2)
+enum SortModes {
+  @HiveField(0)
+  date,
+  @HiveField(1)
+  alpha,
+  @HiveField(2)
+  rating
+}
 
-@JsonSerializable()
+@HiveType(typeId: 0)
 class Item {
+  @HiveField(0)
   String id = const Uuid().v4();
+  @HiveField(1)
   late Categories category;
+  @HiveField(2)
   late String title;
+  @HiveField(3)
   late String comment;
+  @HiveField(4)
   late double rating;
 
   Item({
@@ -21,7 +42,4 @@ class Item {
     required this.comment,
     required this.rating,
   });
-
-  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
-  Map<String, dynamic> toJson() => _$ItemToJson(this);
 }

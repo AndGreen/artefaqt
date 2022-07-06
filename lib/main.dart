@@ -1,3 +1,4 @@
+import 'package:artefaqt/services/database.dart';
 import 'package:artefaqt/state/global.dart';
 import 'package:artefaqt/state/items.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +8,20 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:artefaqt/screens/list.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  var db = await initDatabase();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent, // transparent status bar
   ));
-  return runApp(const MyApp());
+
+  return runApp(MyApp(database: db));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final Database database;
+  const MyApp({Key? key, required this.database}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +31,9 @@ class MyApp extends StatelessWidget {
             create: (context) => GlobalState(),
           ),
           ChangeNotifierProxyProvider<GlobalState, ItemsState>(
-            create: (context) => ItemsState(),
-            update: (context, state, previous) => ItemsState(state),
+            create: (context) => ItemsState(database: database),
+            update: (context, state, previous) =>
+                ItemsState(globalState: state, database: database),
           )
         ],
         child: MaterialApp(

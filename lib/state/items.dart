@@ -1,4 +1,4 @@
-import 'package:artefaqt/state/storage.dart';
+import 'package:artefaqt/services/database.dart';
 import 'package:flutter/material.dart';
 
 import '../models/item.dart';
@@ -7,64 +7,64 @@ import 'global.dart';
 class ItemsState extends ChangeNotifier {
   List<Item> items = [];
   late GlobalState _globalState;
+  late Database _database;
 
-  ItemsState([GlobalState? global]) {
-    if (global != null) {
-      _globalState = global;
+  ItemsState({GlobalState? globalState, required Database database}) {
+    if (globalState != null) {
+      _globalState = globalState;
     }
-    restoreStorageItems().then((newItems) {
-      List<Item> updatedItems = [];
-      if (newItems != null && newItems.length > 0) {
-        for (var item in newItems) {
-          updatedItems.add(Item.fromJson(item));
-        }
-        items = updatedItems;
-      }
-
-      notifyListeners();
-    });
+    _database = database;
+    _restoreItems();
   }
 
-  List<Item> getSelectedItems(BuildContext context) => items
+  _restoreItems() async {
+    var newItems = await restoreDatabaseItems(_database);
+    if (newItems != null) {
+      items = newItems;
+      notifyListeners();
+    }
+  }
+
+  _saveItems() {
+    updateDatabaseItems(_database, items);
+    notifyListeners();
+  }
+
+  List<Item> _getSelectedItems(BuildContext context) => items
       .where((item) => item.category == _globalState.selectedCategory)
       .toList();
 
   List<Item> getSortedItems(BuildContext context) {
     switch (_globalState.sortMode) {
       case SortModes.date:
-        return getSelectedItems(context);
+        return _getSelectedItems(context);
       case SortModes.alpha:
-        return getSelectedItems(context)
+        return _getSelectedItems(context)
           ..sort((a, b) => a.title.compareTo(b.title));
       case SortModes.rating:
-        return getSelectedItems(context)
+        return _getSelectedItems(context)
           ..sort((a, b) => b.rating.compareTo(a.rating));
     }
   }
 
-  _saveChanges() {
-    updateStorageItems(items);
-    notifyListeners();
-  }
-
   addItem(Item newItem) {
     items.insert(0, newItem);
-    _saveChanges();
+    _saveItems();
   }
 
   updateItem(Item updatedItem) {
     items[items.indexWhere((element) => element.id == updatedItem.id)] =
         updatedItem;
-    _saveChanges();
+    _saveItems();
   }
 
   undoLastAddedItem() {
     items.removeLast();
-    _saveChanges();
+    _saveItems();
   }
 
   removeItem(String id) {
     items.removeWhere((element) => element.id == id);
-    _saveChanges();
+    _saveItems();
   }
 }

@@ -73,7 +73,7 @@ class ListScreen extends StatelessWidget {
                             onPressed: (context) {
                               var id = context
                                   .read<ItemsState>()
-                                  .getSelectedItems(context)[index]
+                                  .getSortedItems(context)[index]
                                   .id;
                               context.read<ItemsState>().removeItem(id);
                             },
@@ -96,7 +96,7 @@ class ListScreen extends StatelessWidget {
                           Row(children: [
                             Text(context
                                 .watch<ItemsState>()
-                                .getSelectedItems(context)[index]
+                                .getSortedItems(context)[index]
                                 .rating
                                 .toString()),
                             const Padding(
