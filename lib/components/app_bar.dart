@@ -48,13 +48,17 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 context.read<GlobalState>().changeSortMode(sortMode.toogle());
               },
               child: sortModeIcon(sortMode)),
-          leading: GestureDetector(
-              onTap: () {
-                Scaffold.of(context).openDrawer();
-              },
-              child: const Icon(Ionicons.menu_outline)),
+          leading: Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: GestureDetector(
+                onTap: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                child: const Icon(Ionicons.menu_outline)),
+          ),
           middle: Text(
             context.watch<GlobalState>().selectedCategory.title.toCapitalized(),
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: Colors.white),
           ));
     }
