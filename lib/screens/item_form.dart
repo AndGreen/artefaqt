@@ -5,7 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../models/item.dart';
-import '../state/items.dart';
+import '../state/user.dart';
 
 const headerHeight = 52.0;
 
@@ -23,8 +23,6 @@ class _NewEntityFormState extends State<NewEntityForm> {
   String _comment = '';
   double _rating = 0;
 
-  late ItemsState _context;
-
   @override
   void initState() {
     if (widget.item != null) {
@@ -36,13 +34,8 @@ class _NewEntityFormState extends State<NewEntityForm> {
   }
 
   @override
-  void didChangeDependencies() {
-    _context = context.read<ItemsState>();
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    var userContext = context.watch<UserState>();
     return Material(
         child: Scaffold(
       appBar: PreferredSize(
@@ -134,7 +127,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                 action: SnackBarAction(
                                   label: 'Undo',
                                   onPressed: () {
-                                    _context.undoLastAddedItem();
+                                    userContext.undoLastAddedItem();
                                   },
                                 ),
                               );
@@ -146,9 +139,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                   updatedItem?.rating = _rating;
                                   updatedItem?.comment = _comment;
                                   if (updatedItem != null) {
-                                    context
-                                        .read<ItemsState>()
-                                        .updateItem(updatedItem);
+                                    userContext.updateItem(updatedItem);
                                   }
                                 } else {
                                   var newItem = Item(
@@ -159,7 +150,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                           .read<GlobalState>()
                                           .selectedCategory);
 
-                                  context.read<ItemsState>().addItem(newItem);
+                                  userContext.addItem(newItem);
 
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(snackBar);

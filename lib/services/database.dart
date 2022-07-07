@@ -2,23 +2,26 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../models/item.dart';
 
-const storageItemsKeys = 'items';
+const storageItemsKey = 'items';
+const storageCategoriesKey = 'categories';
 
 typedef Database = Box<dynamic>;
 
 Future<Database> initDatabase() async {
   await Hive.initFlutter();
+  Hive.registerAdapter(CategoryAdapter());
   Hive.registerAdapter(ItemAdapter());
-  Hive.registerAdapter(CategoriesAdapter());
-  Hive.registerAdapter(SortModesAdapter());
-  return await Hive.openBox('appDB');
+  return await Hive.openBox('app');
 }
 
-Future<List<Item>?> restoreDatabaseItems(Database database) async {
-  var a = database.get(storageItemsKeys, defaultValue: []);
-  return a.cast<Item>();
+Future<UserData> restoreUserData(Database database) async {
+  var items = database.get(storageItemsKey, defaultValue: []).cast<Item>();
+  var categories =
+      database.get(storageCategoriesKey, defaultValue: []).cast<Category>();
+  return UserData(items: items, categories: categories);
 }
 
-void updateDatabaseItems(Database database, List<Item> items) async {
-  database.put(storageItemsKeys, items);
+void updateUserData(Database database, UserData userData) async {
+  database.put(storageItemsKey, userData.items);
+  database.put(storageCategoriesKey, userData.categories);
 }

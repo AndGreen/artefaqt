@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import '../models/item.dart';
 
 class GlobalState extends ChangeNotifier {
-  var selectedCategory = Categories.series;
+  late Category selectedCategory = Category(id: loadingId, title: 'Loading...');
   var sortMode = SortModes.date;
 
-  updateSelectedCategory(Categories category) {
+  updateSelectedCategory(Category category) {
     selectedCategory = category;
     notifyListeners();
   }

@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:artefaqt/state/user.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
+import 'package:artefaqt/utils.dart';
 
 import '../models/item.dart';
 import '../state/global.dart';
@@ -11,12 +12,11 @@ class Tile extends StatelessWidget {
     Key? key,
     required this.title,
     required this.category,
-    required this.icon,
   }) : super(key: key);
 
   final String title;
-  final Categories category;
-  final IconData icon;
+  final Category category;
+  // late IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +42,11 @@ class Tile extends StatelessWidget {
         context.read<GlobalState>().updateSelectedCategory(category);
         Navigator.pop(context);
       },
-      leading: Icon(
-        icon,
-        size: 22,
-      ),
+      // TODO: return icons
+      // leading: Icon(
+      //   icon,
+      //   size: 22,
+      // ),
     );
   }
 }
@@ -55,32 +56,27 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var categories = context.watch<UserState>().userData.categories;
     return Drawer(
-        child: ListView(
-      children: const [
-        SizedBox(
-            height: 64.0,
-            child: DrawerHeader(
-              margin: EdgeInsets.all(0.0),
-              decoration: BoxDecoration(
-                  // color: Colors.blue
+      child: ListView(
+        children: [
+          const SizedBox(
+              height: 64.0,
+              child: DrawerHeader(
+                margin: EdgeInsets.all(0.0),
+                decoration: BoxDecoration(
+                    // color: Colors.blue
 
-                  ),
-              child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text('Artefaqt',
-                      style: TextStyle(color: Colors.grey, fontSize: 16))),
-            )),
-        Tile(
-            title: 'Series',
-            icon: Ionicons.tv_sharp,
-            category: Categories.series),
-        Tile(title: 'Movies', icon: Icons.movie, category: Categories.movies),
-        Tile(
-            title: 'Books',
-            icon: Ionicons.book_sharp,
-            category: Categories.books),
-      ],
-    ));
+                    ),
+                child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text('Artefaqt',
+                        style: TextStyle(color: Colors.grey, fontSize: 16))),
+              )),
+          ...categories
+              .map((e) => Tile(category: e, title: e.title.toCapitalized()))
+        ],
+      ),
+    );
   }
 }

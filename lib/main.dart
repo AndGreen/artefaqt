@@ -1,6 +1,6 @@
 import 'package:artefaqt/services/database.dart';
 import 'package:artefaqt/state/global.dart';
-import 'package:artefaqt/state/items.dart';
+import 'package:artefaqt/state/user.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter/services.dart';
@@ -30,10 +30,10 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<GlobalState>(
             create: (context) => GlobalState(),
           ),
-          ChangeNotifierProxyProvider<GlobalState, ItemsState>(
-            create: (context) => ItemsState(database: database),
+          ChangeNotifierProxyProvider<GlobalState, UserState>(
+            create: (context) => UserState(database: database),
             update: (context, state, previous) =>
-                ItemsState(globalState: state, database: database),
+                UserState(globalState: state, database: database),
           )
         ],
         child: MaterialApp(

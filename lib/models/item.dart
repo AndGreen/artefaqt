@@ -1,34 +1,35 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
 part 'item.g.dart';
 
+enum SortModes { date, alpha, rating }
+
 @HiveType(typeId: 1)
-enum Categories {
+class Category {
   @HiveField(0)
-  series,
+  late String id;
   @HiveField(1)
-  movies,
+  late String title;
   @HiveField(2)
-  books
+  late String? iconName;
+
+  Category({
+    required this.id,
+    required this.title,
+    this.iconName,
+  });
 }
 
-@HiveType(typeId: 2)
-enum SortModes {
-  @HiveField(0)
-  date,
-  @HiveField(1)
-  alpha,
-  @HiveField(2)
-  rating
-}
+const loadingId = 'loading';
 
 @HiveType(typeId: 0)
 class Item {
   @HiveField(0)
   String id = const Uuid().v4();
   @HiveField(1)
-  late Categories category;
+  late Category category;
   @HiveField(2)
   late String title;
   @HiveField(3)
@@ -41,5 +42,14 @@ class Item {
     required this.title,
     required this.comment,
     required this.rating,
+  });
+}
+
+class UserData {
+  late List<Item> items;
+  late List<Category> categories;
+  UserData({
+    required this.items,
+    required this.categories,
   });
 }
