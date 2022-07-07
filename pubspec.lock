@@ -338,6 +338,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  ionicons_named:
+    dependency: "direct dev"
+    description:
+      name: ionicons_named
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1+2"
   js:
     dependency: transitive
     description:
