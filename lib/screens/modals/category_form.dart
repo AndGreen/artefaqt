@@ -9,14 +9,15 @@ import '../../state/user.dart';
 const headerHeight = 52.0;
 
 class NewCategoryForm extends StatefulWidget {
-  final Item? item;
-  const NewCategoryForm({Key? key, this.item}) : super(key: key);
+  final Category? category;
+  const NewCategoryForm({Key? key, this.category}) : super(key: key);
 
   @override
   State<NewCategoryForm> createState() => _NewCategoryFormState();
 }
 
 class FormData {
+  String id = '';
   String title = '';
 }
 
@@ -26,8 +27,9 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
 
   @override
   void initState() {
-    if (widget.item != null) {
-      data.title = widget.item?.title ?? data.title;
+    if (widget.category != null) {
+      data.id = widget.category?.id ?? data.id;
+      data.title = widget.category?.title ?? data.title;
     }
     super.initState();
   }
@@ -44,7 +46,7 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                 backgroundColor: const Color(0xff262626),
                 leading: Container(),
                 middle: Text(
-                    widget.item != null ? 'Edit category' : 'New category',
+                    widget.category != null ? 'Edit category' : 'New category',
                     style: const TextStyle(color: Colors.white)),
               ))),
       body: SafeArea(
@@ -82,11 +84,12 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               if (data.title.isNotEmpty) {
-                                if (widget.item != null) {
-                                  var updatedItem = widget.item;
-                                  updatedItem?.title = data.title;
-                                  if (updatedItem != null) {
-                                    userContext.updateItem(updatedItem);
+                                if (widget.category != null) {
+                                  var updatedCategory = widget.category;
+                                  updatedCategory?.id = data.id;
+                                  updatedCategory?.title = data.title;
+                                  if (updatedCategory != null) {
+                                    userContext.updateCategory(updatedCategory);
                                   }
                                 } else {
                                   var newCategory = Category(
@@ -101,7 +104,8 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                               }
                             }
                           },
-                          child: Text(widget.item != null ? 'Update' : 'Add'),
+                          child:
+                              Text(widget.category != null ? 'Update' : 'Add'),
                         )
                       ])))),
     );

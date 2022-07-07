@@ -13,10 +13,12 @@ import '../state/global.dart';
 class Tile extends StatelessWidget {
   const Tile({
     Key? key,
+    required this.id,
     required this.title,
     required this.category,
   }) : super(key: key);
 
+  final String id;
   final String title;
   final Category category;
   // late IconData icon;
@@ -41,6 +43,16 @@ class Tile extends StatelessWidget {
       selected: context.watch<GlobalState>().selectedCategory == category,
       selectedColor: Colors.white,
       selectedTileColor: Colors.grey[800],
+      onLongPress: () {
+        showCupertinoModalBottomSheet(
+          context: context,
+          builder: (context) => NewCategoryForm(
+              category:
+                  context.read<UserState>().userData.categories.firstWhere(
+                        (element) => element.id == id,
+                      )),
+        );
+      },
       onTap: () {
         context.read<GlobalState>().updateSelectedCategory(category);
         Navigator.pop(context);
@@ -75,8 +87,8 @@ class CustomDrawer extends StatelessWidget {
                     child: Text('Artefaqt',
                         style: TextStyle(color: Colors.grey, fontSize: 16))),
               )),
-          ...categories
-              .map((e) => Tile(category: e, title: e.title.toCapitalized())),
+          ...categories.map((e) =>
+              Tile(id: e.id, category: e, title: e.title.toCapitalized())),
           TextButton.icon(
               onPressed: () {
                 showCupertinoModalBottomSheet(
