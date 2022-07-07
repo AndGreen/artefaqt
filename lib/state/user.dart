@@ -9,7 +9,7 @@ import 'global.dart';
 var defaultCategories = [
   Category(id: const Uuid().v4(), title: 'Series'),
   Category(id: const Uuid().v4(), title: 'Movies'),
-  Category(id: const Uuid().v4(), title: 'books')
+  Category(id: const Uuid().v4(), title: 'Books')
 ];
 
 class UserState extends ChangeNotifier {
@@ -39,11 +39,6 @@ class UserState extends ChangeNotifier {
     notifyListeners();
   }
 
-  _saveItems() {
-    updateUserData(_database, userData);
-    notifyListeners();
-  }
-
   List<Item> _getSelectedItems(BuildContext context) {
     return userData.items
         .where((item) => item.category.id == _globalState?.selectedCategory.id)
@@ -64,24 +59,41 @@ class UserState extends ChangeNotifier {
     }
   }
 
+  _saveData() {
+    updateUserData(_database, userData);
+    notifyListeners();
+  }
+
   addItem(Item newItem) {
     userData.items.insert(0, newItem);
-    _saveItems();
+    _saveData();
   }
 
   updateItem(Item updatedItem) {
     userData.items[userData.items
         .indexWhere((element) => element.id == updatedItem.id)] = updatedItem;
-    _saveItems();
-  }
-
-  undoLastAddedItem() {
-    userData.items.removeLast();
-    _saveItems();
+    _saveData();
   }
 
   removeItem(String id) {
     userData.items.removeWhere((element) => element.id == id);
-    _saveItems();
+    _saveData();
+  }
+
+  addCategory(Category newCategory) {
+    userData.categories.add(newCategory);
+    _saveData();
+  }
+
+  updateCategory(Category updatedCategory) {
+    userData.categories[userData.categories
+            .indexWhere((element) => element.id == updatedCategory.id)] =
+        updatedCategory;
+    _saveData();
+  }
+
+  removeCategory(String id) {
+    userData.categories.removeWhere((element) => element.id == id);
+    _saveData();
   }
 }

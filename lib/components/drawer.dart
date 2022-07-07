@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:artefaqt/screens/modals/category_form.dart';
 import 'package:artefaqt/state/user.dart';
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:artefaqt/utils.dart';
 
@@ -68,13 +71,24 @@ class CustomDrawer extends StatelessWidget {
                     // color: Colors.blue
 
                     ),
-                child: Align(
-                    alignment: Alignment.topLeft,
+                child: Center(
                     child: Text('Artefaqt',
                         style: TextStyle(color: Colors.grey, fontSize: 16))),
               )),
           ...categories
-              .map((e) => Tile(category: e, title: e.title.toCapitalized()))
+              .map((e) => Tile(category: e, title: e.title.toCapitalized())),
+          TextButton.icon(
+              onPressed: () {
+                showCupertinoModalBottomSheet(
+                  context: context,
+                  builder: (context) => const NewCategoryForm(),
+                );
+              },
+              icon: const Icon(Ionicons.add_circle_outline),
+              label: const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Text("New category", textAlign: TextAlign.left),
+              ))
         ],
       ),
     );

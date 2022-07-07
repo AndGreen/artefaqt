@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/components/drawer.dart';
-import 'package:artefaqt/screens/item_form.dart';
+import 'package:artefaqt/screens/modals/item_form.dart';
 
 import '../models/item.dart';
 
@@ -33,7 +33,7 @@ class ListScreen extends StatelessWidget {
               onPressed: () {
                 showCupertinoModalBottomSheet(
                   context: context,
-                  builder: (context) => const NewEntityForm(),
+                  builder: (context) => const NewItemForm(),
                 );
               },
               child: const Icon(Icons.add),
@@ -53,7 +53,7 @@ class ListScreen extends StatelessWidget {
                       onLongPress: () {
                         showCupertinoModalBottomSheet(
                           context: context,
-                          builder: (context) => NewEntityForm(
+                          builder: (context) => NewItemForm(
                               item: context
                                   .read<UserState>()
                                   .getSortedItems(context)[index]),

@@ -4,31 +4,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
-import '../models/item.dart';
-import '../state/user.dart';
+import '../../models/item.dart';
+import '../../state/user.dart';
 
 const headerHeight = 52.0;
 
-class NewEntityForm extends StatefulWidget {
+class NewItemForm extends StatefulWidget {
   final Item? item;
-  const NewEntityForm({Key? key, this.item}) : super(key: key);
+  const NewItemForm({Key? key, this.item}) : super(key: key);
 
   @override
-  State<NewEntityForm> createState() => _NewEntityFormState();
+  State<NewItemForm> createState() => _NewItemFormState();
 }
 
-class _NewEntityFormState extends State<NewEntityForm> {
+class FormData {
+  String title = '';
+  String comment = '';
+  double rating = 0;
+}
+
+class _NewItemFormState extends State<NewItemForm> {
   final _formKey = GlobalKey<FormState>();
-  String _title = '';
-  String _comment = '';
-  double _rating = 0;
+  var data = FormData();
 
   @override
   void initState() {
     if (widget.item != null) {
-      _title = widget.item?.title ?? _title;
-      _comment = widget.item?.comment ?? _comment;
-      _rating = widget.item?.rating ?? _rating;
+      data.title = widget.item?.title ?? data.title;
+      data.comment = widget.item?.comment ?? data.comment;
+      data.rating = widget.item?.rating ?? data.rating;
     }
     super.initState();
   }
@@ -36,8 +40,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
   @override
   Widget build(BuildContext context) {
     var userContext = context.watch<UserState>();
-    return Material(
-        child: Scaffold(
+    return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(headerHeight),
           child: SizedBox(
@@ -71,9 +74,9 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                       style: TextStyle(color: Colors.white)),
                                   child: CupertinoTextFormFieldRow(
                                     onChanged: (String? value) {
-                                      _title = value ?? '';
+                                      data.title = value ?? '';
                                     },
-                                    initialValue: _title,
+                                    initialValue: data.title,
                                     autofocus: true,
                                     placeholder: 'Artefaqt name',
                                     style: const TextStyle(color: Colors.white),
@@ -86,9 +89,9 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                     maxLines: 12,
                                     minLines: 1,
                                     onChanged: (String? value) {
-                                      _comment = value ?? '';
+                                      data.comment = value ?? '';
                                     },
-                                    initialValue: _comment,
+                                    initialValue: data.comment,
                                     autofocus: true,
                                     placeholder: 'Your expressions',
                                     style: const TextStyle(color: Colors.white),
@@ -97,7 +100,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                   prefix: const Text('Raiting',
                                       style: TextStyle(color: Colors.white)),
                                   child: RatingBar.builder(
-                                    initialRating: _rating,
+                                    initialRating: data.rating,
                                     minRating: 0,
                                     glow: false,
                                     direction: Axis.horizontal,
@@ -110,7 +113,7 @@ class _NewEntityFormState extends State<NewEntityForm> {
                                       color: Colors.amber,
                                     ),
                                     onRatingUpdate: (rating) {
-                                      _rating = rating;
+                                      data.rating = rating;
                                     },
                                   ))
                             ]),
@@ -118,42 +121,25 @@ class _NewEntityFormState extends State<NewEntityForm> {
                         CupertinoButton.filled(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              final snackBar = SnackBar(
-                                backgroundColor: const Color(0xff262626),
-                                content: const Text(
-                                  'All done!',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                action: SnackBarAction(
-                                  label: 'Undo',
-                                  onPressed: () {
-                                    userContext.undoLastAddedItem();
-                                  },
-                                ),
-                              );
-
-                              if (_title.isNotEmpty) {
+                              if (data.title.isNotEmpty) {
                                 if (widget.item != null) {
                                   var updatedItem = widget.item;
-                                  updatedItem?.title = _title;
-                                  updatedItem?.rating = _rating;
-                                  updatedItem?.comment = _comment;
+                                  updatedItem?.title = data.title;
+                                  updatedItem?.rating = data.rating;
+                                  updatedItem?.comment = data.comment;
                                   if (updatedItem != null) {
                                     userContext.updateItem(updatedItem);
                                   }
                                 } else {
                                   var newItem = Item(
-                                      title: _title,
-                                      comment: _comment,
-                                      rating: _rating,
+                                      title: data.title,
+                                      comment: data.comment,
+                                      rating: data.rating,
                                       category: context
                                           .read<GlobalState>()
                                           .selectedCategory);
 
                                   userContext.addItem(newItem);
-
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
                                 }
 
                                 Navigator.of(context).pop();
@@ -163,6 +149,6 @@ class _NewEntityFormState extends State<NewEntityForm> {
                           child: Text(widget.item != null ? 'Update' : 'Add'),
                         )
                       ])))),
-    ));
+    );
   }
 }
