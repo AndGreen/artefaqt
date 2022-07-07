@@ -73,6 +73,8 @@ class _NewItemFormState extends State<NewItemForm> {
                                   prefix: const Text('Title',
                                       style: TextStyle(color: Colors.white)),
                                   child: CupertinoTextFormFieldRow(
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
                                     onChanged: (String? value) {
                                       data.title = value ?? '';
                                     },
@@ -85,6 +87,8 @@ class _NewItemFormState extends State<NewItemForm> {
                                   prefix: const Text('Comment',
                                       style: TextStyle(color: Colors.white)),
                                   child: CupertinoTextFormFieldRow(
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
                                     keyboardType: TextInputType.multiline,
                                     maxLines: 12,
                                     minLines: 1,

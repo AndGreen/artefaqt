@@ -70,6 +70,8 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                                   prefix: const Text('Title',
                                       style: TextStyle(color: Colors.white)),
                                   child: CupertinoTextFormFieldRow(
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
                                     onChanged: (String? value) {
                                       data.title = value ?? '';
                                     },
