@@ -94,6 +94,10 @@ class UserState extends ChangeNotifier {
 
   removeCategory(String id) {
     userData.categories.removeWhere((element) => element.id == id);
+    userData.items.removeWhere((element) => element.category.id == id);
+    if (_globalState != null) {
+      _globalState?.updateSelectedCategory(userData.categories.first);
+    }
     _saveData();
   }
 }
