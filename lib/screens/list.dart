@@ -45,72 +45,75 @@ class ListScreen extends StatelessWidget {
             body: SlidableAutoCloseBehavior(
               closeWhenOpened: true,
               closeWhenTapped: true,
-              child: ListView.separated(
-                itemCount:
-                    context.watch<UserState>().getSortedItems(context).length,
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                      onLongPress: () {
-                        showCupertinoModalBottomSheet(
-                          context: context,
-                          builder: (context) => NewItemForm(
-                              item: context
-                                  .read<UserState>()
-                                  .getSortedItems(context)[index]),
-                        );
-                      },
-                      onTap: (() {
-                        Navigator.pushNamed(context, '/detail',
-                            arguments: DetailArguments(
+              child: Scrollbar(
+                child: ListView.separated(
+                  itemCount:
+                      context.watch<UserState>().getSortedItems(context).length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                        onLongPress: () {
+                          showCupertinoModalBottomSheet(
+                            context: context,
+                            builder: (context) => NewItemForm(
                                 item: context
                                     .read<UserState>()
-                                    .getSortedItems(context)[index]));
-                      }),
-                      child: Slidable(
-                          key: ValueKey(index),
-                          endActionPane: ActionPane(
-                            extentRatio: 0.25,
-                            motion: const DrawerMotion(),
-                            children: [
-                              SlidableAction(
-                                onPressed: (context) {
-                                  var id = context
+                                    .getSortedItems(context)[index]),
+                          );
+                        },
+                        onTap: (() {
+                          Navigator.pushNamed(context, '/detail',
+                              arguments: DetailArguments(
+                                  item: context
                                       .read<UserState>()
-                                      .getSortedItems(context)[index]
-                                      .id;
-                                  context.read<UserState>().removeItem(id);
-                                },
-                                backgroundColor: const Color(0xFFFE4A49),
-                                foregroundColor: Colors.white,
-                                icon: Icons.delete,
-                                label: 'Delete',
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                              title: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20.0),
-                            child: Row(children: [
-                              Expanded(
-                                  child: Text(context
+                                      .getSortedItems(context)[index]));
+                        }),
+                        child: Slidable(
+                            key: ValueKey(index),
+                            endActionPane: ActionPane(
+                              extentRatio: 0.25,
+                              motion: const DrawerMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (context) {
+                                    var id = context
+                                        .read<UserState>()
+                                        .getSortedItems(context)[index]
+                                        .id;
+                                    context.read<UserState>().removeItem(id);
+                                  },
+                                  backgroundColor: const Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                  label: 'Delete',
+                                ),
+                              ],
+                            ),
+                            child: ListTile(
+                                title: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 20.0),
+                              child: Row(children: [
+                                Expanded(
+                                    child: Text(context
+                                        .watch<UserState>()
+                                        .getSortedItems(context)[index]
+                                        .title)),
+                                Row(children: [
+                                  Text(context
                                       .watch<UserState>()
                                       .getSortedItems(context)[index]
-                                      .title)),
-                              Row(children: [
-                                Text(context
-                                    .watch<UserState>()
-                                    .getSortedItems(context)[index]
-                                    .rating
-                                    .toString()),
-                                const Padding(
-                                    padding: EdgeInsets.only(left: 6),
-                                    child: Icon(Icons.star))
-                              ])
-                            ]),
-                          ))));
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(height: 1),
+                                      .rating
+                                      .toString()),
+                                  const Padding(
+                                      padding: EdgeInsets.only(left: 6),
+                                      child: Icon(Icons.star))
+                                ])
+                              ]),
+                            ))));
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(height: 1),
+                ),
               ),
             ));
   }
