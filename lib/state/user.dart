@@ -1,6 +1,7 @@
 import 'package:artefaqt/services/database.dart';
 import 'package:artefaqt/state/global.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/item.dart';
@@ -13,16 +14,14 @@ var defaultCategories = [
 ];
 
 class UserState extends ChangeNotifier {
-  UserData userData = UserData(items: [], categories: defaultCategories);
+  late UserData userData = UserData(items: [], categories: defaultCategories);
 
-  GlobalState? _globalState;
+  late GlobalState _globalState;
   late Database _database;
 
-  UserState({GlobalState? globalState, required Database database}) {
-    if (globalState != null) {
-      _globalState = globalState;
-    }
+  UserState({required Database database, required BuildContext context}) {
     _database = database;
+    _globalState = Provider.of<GlobalState>(context, listen: false);
     _restoreData();
   }
 
@@ -32,22 +31,18 @@ class UserState extends ChangeNotifier {
     if (newUserData.categories.isNotEmpty) {
       userData.categories = newUserData.categories;
     }
-    if (_globalState != null &&
-        _globalState?.selectedCategory.id == loadingId) {
-      _globalState?.updateSelectedCategory(userData.categories.first);
-    }
+    _globalState.updateSelectedCategory(userData.categories.first);
     notifyListeners();
   }
 
   List<Item> _getSelectedItems() {
     return userData.items
-        .where((item) => item.category.id == _globalState?.selectedCategory.id)
+        .where((item) => item.category.id == _globalState.selectedCategory.id)
         .toList();
   }
 
   List<Item> _getSortedItems() {
-    switch (_globalState?.sortMode) {
-      case null:
+    switch (_globalState.sortMode) {
       case SortModes.date:
         return _getSelectedItems();
       case SortModes.alpha:
@@ -103,9 +98,7 @@ class UserState extends ChangeNotifier {
   removeCategory(String id) {
     userData.categories.removeWhere((element) => element.id == id);
     userData.items.removeWhere((element) => element.category.id == id);
-    if (_globalState != null) {
-      _globalState?.updateSelectedCategory(userData.categories.first);
-    }
+    _globalState.updateSelectedCategory(userData.categories.first);
     _saveData();
   }
 }

@@ -30,11 +30,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<GlobalState>(
             create: (context) => GlobalState(),
           ),
-          ChangeNotifierProxyProvider<GlobalState, UserState>(
-            create: (context) => UserState(database: database),
-            update: (context, state, previous) =>
-                UserState(globalState: state, database: database),
-          )
+          ChangeNotifierProvider<UserState>(
+              create: (context) =>
+                  UserState(database: database, context: context))
         ],
         child: MaterialApp(
             title: 'welcome',
@@ -43,7 +41,8 @@ class MyApp extends StatelessWidget {
               switch (settings.name) {
                 case '/':
                   return MaterialWithModalsPageRoute(
-                      settings: settings, builder: (context) => ListScreen());
+                      settings: settings,
+                      builder: (context) => const ListScreen());
               }
               return null;
             },
