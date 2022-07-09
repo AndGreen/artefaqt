@@ -68,6 +68,21 @@ class _ListScreenState extends State<ListScreen> {
             ),
             body: Column(
               children: [
+                if (items.isEmpty)
+                  Stack(
+                    children: [
+                      const SizedBox(
+                          height: 140,
+                          child: Center(
+                            child: Text('Start your journey',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 23,
+                                    color: Colors.grey)),
+                          )),
+                      Center(child: Image.asset('assets/empty_map.png')),
+                    ],
+                  ),
                 if (items.isNotEmpty || _filterInput != null)
                   Padding(
                     padding: const EdgeInsets.all(10.0),
