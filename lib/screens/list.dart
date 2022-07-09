@@ -24,11 +24,17 @@ class _ListScreenState extends State<ListScreen> {
   String? _filterInput;
   late final _textController = TextEditingController(text: _filterInput);
 
+  clearFilter() {
+    setState(() {
+      _filterInput = null;
+    });
+    _textController.clear();
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   @override
   void didChangeDependencies() {
-    print('UPDATED');
-    _filterInput = null;
-    _textController.clear();
+    clearFilter();
     super.didChangeDependencies();
   }
 
@@ -68,6 +74,9 @@ class _ListScreenState extends State<ListScreen> {
                     child: CupertinoSearchTextField(
                       controller: _textController,
                       placeholder: 'Filter',
+                      onSuffixTap: () {
+                        clearFilter();
+                      },
                       onChanged: (value) {
                         setState(() {
                           _filterInput = value;
