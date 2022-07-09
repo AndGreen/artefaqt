@@ -43,38 +43,45 @@ class _DetailScreenState extends State<DetailScreen> {
               _controller?.fire();
             });
           },
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(height: 10),
-                RatingBar.builder(
-                  initialRating: args.item.rating,
-                  minRating: 1,
-                  glow: false,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  ignoreGestures: true,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {},
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              child: RatingBar.builder(
+                initialRating: args.item.rating,
+                minRating: 1,
+                glow: false,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5,
+                ignoreGestures: true,
+                itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => const Icon(
+                  Icons.star,
+                  color: Colors.amber,
                 ),
-                Text(args.item.comment, style: const TextStyle(fontSize: 16)),
-                Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Transform.scale(
-                        scale: 3,
-                        child: SizedBox(
-                            height: 300,
-                            child: RiveAnimation.asset(
-                              'assets/skins.riv',
-                              fit: BoxFit.cover,
-                              onInit: _onRiveInit,
-                            ))))
-              ]),
+                onRatingUpdate: (rating) {},
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 250),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Center(
+                        child: args.item.comment.isNotEmpty
+                            ? Text(args.item.comment,
+                                style: const TextStyle(fontSize: 16))
+                            : const Text(
+                                '🤷‍♂️',
+                                style: TextStyle(fontSize: 30),
+                              )),
+                  ),
+                ),
+              ),
+            ),
+          ]),
         ));
   }
 }
