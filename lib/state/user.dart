@@ -39,24 +39,32 @@ class UserState extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Item> _getSelectedItems(BuildContext context) {
+  List<Item> _getSelectedItems() {
     return userData.items
         .where((item) => item.category.id == _globalState?.selectedCategory.id)
         .toList();
   }
 
-  List<Item> getSortedItems(BuildContext context) {
+  List<Item> _getSortedItems() {
     switch (_globalState?.sortMode) {
       case null:
       case SortModes.date:
-        return _getSelectedItems(context);
+        return _getSelectedItems();
       case SortModes.alpha:
-        return _getSelectedItems(context)
-          ..sort((a, b) => a.title.compareTo(b.title));
+        return _getSelectedItems()..sort((a, b) => a.title.compareTo(b.title));
       case SortModes.rating:
-        return _getSelectedItems(context)
+        return _getSelectedItems()
           ..sort((a, b) => b.rating.compareTo(a.rating));
     }
+  }
+
+  List<Item> getFilteredItems(String? input) {
+    return input != null
+        ? _getSortedItems()
+            .where((element) =>
+                element.title.toLowerCase().contains(input.toLowerCase()))
+            .toList()
+        : _getSelectedItems();
   }
 
   _saveData() {

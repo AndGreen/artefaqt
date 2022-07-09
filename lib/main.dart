@@ -43,8 +43,7 @@ class MyApp extends StatelessWidget {
               switch (settings.name) {
                 case '/':
                   return MaterialWithModalsPageRoute(
-                      settings: settings,
-                      builder: (context) => const ListScreen());
+                      settings: settings, builder: (context) => ListScreen());
               }
               return null;
             },
