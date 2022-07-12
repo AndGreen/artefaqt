@@ -17,11 +17,13 @@ class Tile extends StatelessWidget {
     required this.id,
     required this.title,
     required this.category,
+    required this.selected,
   }) : super(key: key);
 
   final String id;
   final String title;
   final Category category;
+  final bool selected;
   // late IconData icon;
 
   @override
@@ -29,14 +31,32 @@ class Tile extends StatelessWidget {
     return Slidable(
       key: ValueKey(id),
       endActionPane: ActionPane(
-        extentRatio: 0.25,
+        extentRatio: 0.5,
         motion: const DrawerMotion(),
         children: [
+          SlidableAction(
+              onPressed: (context) {
+                showCupertinoModalBottomSheet(
+                  context: context,
+                  builder: (context) => NewCategoryForm(
+                      category: context
+                          .read<UserState>()
+                          .userData
+                          .categories
+                          .firstWhere(
+                            (element) => element.id == id,
+                          )),
+                );
+              },
+              backgroundColor: const Color.fromARGB(255, 84, 84, 84),
+              foregroundColor: Colors.white,
+              icon: Icons.edit,
+              label: 'Edit'),
           SlidableAction(
             onPressed: (context) {
               context.read<UserState>().removeCategory(id);
             },
-            backgroundColor: const Color(0xFFFE4A49),
+            backgroundColor: const Color(0xfffe604d),
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: 'Delete',
@@ -52,25 +72,25 @@ class Tile extends StatelessWidget {
               fontWeight: FontWeight.w500,
               fontSize: 15,
             )),
-        trailing: context.watch<GlobalState>().selectedCategory == category
+        trailing: selected
             ? const Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
               )
             : const SizedBox.shrink(), // Just empty Widget
-        selected: context.watch<GlobalState>().selectedCategory == category,
+        selected: selected,
         selectedColor: Colors.white,
         selectedTileColor: Colors.grey[800],
-        onLongPress: () {
-          showCupertinoModalBottomSheet(
-            context: context,
-            builder: (context) => NewCategoryForm(
-                category:
-                    context.read<UserState>().userData.categories.firstWhere(
-                          (element) => element.id == id,
-                        )),
-          );
-        },
+        // onLongPress: () {
+        //   showCupertinoModalBottomSheet(
+        //     context: context,
+        //     builder: (context) => NewCategoryForm(
+        //         category:
+        //             context.read<UserState>().userData.categories.firstWhere(
+        //                   (element) => element.id == id,
+        //                 )),
+        //   );
+        // },
         onTap: () {
           context.read<GlobalState>().updateSelectedCategory(category);
           Navigator.pop(context);
@@ -85,12 +105,19 @@ class Tile extends StatelessWidget {
   }
 }
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);
 
   @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  var isOnReorder = false;
+  @override
   Widget build(BuildContext context) {
     var categories = context.watch<UserState>().userData.categories;
+
     return Drawer(
       child: SlidableAutoCloseBehavior(
         closeWhenOpened: true,
@@ -109,8 +136,35 @@ class CustomDrawer extends StatelessWidget {
                       child: Text('Artefaqt',
                           style: TextStyle(color: Colors.grey, fontSize: 16))),
                 )),
-            ...categories.map((e) =>
-                Tile(id: e.id, category: e, title: e.title.toCapitalized())),
+            ReorderableListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              onReorderStart: (int index) {
+                setState(() {
+                  isOnReorder = true;
+                });
+              },
+              onReorderEnd: (int index) {
+                setState(() {
+                  isOnReorder = false;
+                });
+              },
+              onReorder: (int oldIndex, int nextIndex) {
+                context
+                    .read<UserState>()
+                    .reorderCategories(oldIndex, nextIndex);
+              },
+              children: [
+                ...categories.map((e) => Tile(
+                    key: Key(e.id),
+                    id: e.id,
+                    selected:
+                        context.watch<GlobalState>().selectedCategory == e &&
+                            !isOnReorder,
+                    category: e,
+                    title: e.title.toCapitalized()))
+              ],
+            ),
             TextButton.icon(
                 onPressed: () {
                   showCupertinoModalBottomSheet(

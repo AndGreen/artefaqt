@@ -88,6 +88,16 @@ class UserState extends ChangeNotifier {
     _saveData();
   }
 
+  reorderCategories(int oldIndex, int nextIndex) {
+    if (oldIndex < nextIndex) {
+      nextIndex -= 1;
+    }
+    List<Category> newCategories = List.from(userData.categories);
+    newCategories.insert(nextIndex, newCategories.removeAt(oldIndex));
+    userData.categories = newCategories;
+    _saveData();
+  }
+
   updateCategory(Category updatedCategory) {
     userData.categories[userData.categories
             .indexWhere((element) => element.id == updatedCategory.id)] =
