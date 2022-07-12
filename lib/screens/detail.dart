@@ -5,6 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../models/item.dart';
 
+const dinoHappy = 'assets/dino_likes.svg';
+const dinoSad = 'assets/dino_sad.svg';
+
 class DetailArguments {
   final Item item;
 
@@ -34,7 +37,8 @@ class _DetailScreenState extends State<DetailScreen> {
             Positioned(
               bottom: 0,
               right: 0,
-              child: SvgPicture.asset(height: 250, 'assets/dino_likes.svg'),
+              child: SvgPicture.asset(
+                  height: 250, args.item.rating >= 4 ? dinoHappy : dinoSad),
             ),
             Column(children: [
               Padding(
