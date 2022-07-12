@@ -144,15 +144,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   isOnReorder = true;
                 });
               },
-              onReorderEnd: (int index) {
-                setState(() {
-                  isOnReorder = false;
-                });
-              },
               onReorder: (int oldIndex, int nextIndex) {
                 context
                     .read<UserState>()
                     .reorderCategories(oldIndex, nextIndex);
+
+                isOnReorder = false;
               },
               children: [
                 ...categories.map((e) => Tile(
