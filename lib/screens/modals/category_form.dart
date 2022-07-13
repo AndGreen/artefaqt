@@ -46,7 +46,9 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                 backgroundColor: const Color(0xff262626),
                 leading: Container(),
                 middle: Text(
-                    widget.category != null ? 'Edit category' : 'New category',
+                    widget.category != null
+                        ? 'Edit collection'
+                        : 'New collection',
                     style: const TextStyle(color: Colors.white)),
               ))),
       body: SafeArea(
@@ -77,7 +79,7 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                                     },
                                     initialValue: data.title,
                                     autofocus: true,
-                                    placeholder: 'Category name',
+                                    placeholder: 'Collection name',
                                     style: const TextStyle(color: Colors.white),
                                   )),
                             ]),

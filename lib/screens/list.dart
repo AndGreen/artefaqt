@@ -1,3 +1,5 @@
+import 'package:artefaqt/components/add_button.dart';
+import 'package:artefaqt/components/edit_action_pane.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:artefaqt/state/global.dart';
 import 'package:artefaqt/state/user.dart';
@@ -11,6 +13,7 @@ import 'package:artefaqt/components/app_bar.dart';
 import 'package:artefaqt/components/drawer.dart';
 import 'package:artefaqt/screens/modals/item_form.dart';
 
+import '../components/treasure_map.dart';
 import '../models/item.dart';
 
 class ListScreen extends StatefulWidget {
@@ -57,7 +60,7 @@ class _ListScreenState extends State<ListScreen> {
               onPressed: () {
                 showCupertinoModalBottomSheet(
                   context: context,
-                  builder: (context) => const NewItemForm(),
+                  builder: (context) => const ItemForm(),
                 );
               },
               child: const Icon(Icons.add),
@@ -67,22 +70,9 @@ class _ListScreenState extends State<ListScreen> {
               showMenuButton: true,
             ),
             body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (items.isEmpty)
-                  Stack(
-                    children: [
-                      const SizedBox(
-                          height: 140,
-                          child: Center(
-                            child: Text('Start your journey',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 23,
-                                    color: Colors.grey)),
-                          )),
-                      Center(child: Image.asset('assets/empty_map.png')),
-                    ],
-                  ),
+                if (items.isEmpty && _filterInput == null) const TreasureMap(),
                 if (items.isNotEmpty || _filterInput != null)
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -100,6 +90,16 @@ class _ListScreenState extends State<ListScreen> {
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),
+                if (items.isEmpty && _filterInput != null)
+                  AddButton(
+                    title: "Add $_filterInput",
+                    onPressed: () {
+                      showCupertinoModalBottomSheet(
+                        context: context,
+                        builder: (context) => ItemForm(title: _filterInput),
+                      );
+                    },
+                  ),
                 Expanded(
                   child: SlidableAutoCloseBehavior(
                     closeWhenOpened: true,
@@ -108,57 +108,41 @@ class _ListScreenState extends State<ListScreen> {
                       child: ListView.separated(
                         itemCount: items.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                              onLongPress: () {
-                                showCupertinoModalBottomSheet(
-                                  context: context,
-                                  builder: (context) =>
-                                      NewItemForm(item: items[index]),
-                                );
-                              },
-                              onTap: (() {
-                                Navigator.pushNamed(context, '/detail',
-                                    arguments:
-                                        DetailArguments(item: items[index]));
-                              }),
-                              child: Slidable(
-                                  key: ValueKey(index),
-                                  endActionPane: ActionPane(
-                                    extentRatio: 0.25,
-                                    motion: const DrawerMotion(),
-                                    children: [
-                                      SlidableAction(
-                                        onPressed: (context) {
-                                          var id = items[index].id;
-                                          context
-                                              .read<UserState>()
-                                              .removeItem(id);
-                                        },
-                                        backgroundColor:
-                                            const Color(0xFFFE4A49),
-                                        foregroundColor: Colors.white,
-                                        icon: Icons.delete,
-                                        label: 'Delete',
-                                      ),
-                                    ],
-                                  ),
-                                  child: ListTile(
-                                      title: Padding(
-                                    padding: index == 0
-                                        ? const EdgeInsets.only(
-                                            top: 14, bottom: 20)
-                                        : const EdgeInsets.symmetric(
-                                            vertical: 20.0),
-                                    child: Row(children: [
-                                      Expanded(child: Text(items[index].title)),
-                                      Row(children: [
-                                        Text(items[index].rating.toString()),
-                                        const Padding(
-                                            padding: EdgeInsets.only(left: 6),
-                                            child: Icon(Icons.star))
-                                      ])
-                                    ]),
-                                  ))));
+                          return EditActionPane(
+                            onEdit: () {
+                              showCupertinoModalBottomSheet(
+                                context: context,
+                                builder: (context) =>
+                                    ItemForm(item: items[index]),
+                              );
+                            },
+                            onDelete: () {
+                              var id = items[index].id;
+                              context.read<UserState>().removeItem(id);
+                            },
+                            child: ListTile(
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/detail',
+                                      arguments:
+                                          DetailArguments(item: items[index]));
+                                },
+                                title: Padding(
+                                  padding: index == 0
+                                      ? const EdgeInsets.only(
+                                          top: 14, bottom: 20)
+                                      : const EdgeInsets.symmetric(
+                                          vertical: 20.0),
+                                  child: Row(children: [
+                                    Expanded(child: Text(items[index].title)),
+                                    Row(children: [
+                                      Text(items[index].rating.toString()),
+                                      const Padding(
+                                          padding: EdgeInsets.only(left: 6),
+                                          child: Icon(Icons.star))
+                                    ])
+                                  ]),
+                                )),
+                          );
                         },
                         separatorBuilder: (BuildContext context, int index) =>
                             const Divider(height: 1),

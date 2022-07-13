@@ -9,12 +9,14 @@ import '../../state/user.dart';
 
 const headerHeight = 52.0;
 
-class NewItemForm extends StatefulWidget {
+class ItemForm extends StatefulWidget {
+  const ItemForm({Key? key, this.item, this.title}) : super(key: key);
+
   final Item? item;
-  const NewItemForm({Key? key, this.item}) : super(key: key);
+  final String? title;
 
   @override
-  State<NewItemForm> createState() => _NewItemFormState();
+  State<ItemForm> createState() => _ItemFormState();
 }
 
 class FormData {
@@ -23,12 +25,15 @@ class FormData {
   double rating = 0;
 }
 
-class _NewItemFormState extends State<NewItemForm> {
+class _ItemFormState extends State<ItemForm> {
   final _formKey = GlobalKey<FormState>();
   var data = FormData();
 
   @override
   void initState() {
+    if (widget.title != null) {
+      data.title = widget.title!;
+    }
     if (widget.item != null) {
       data.title = widget.item?.title ?? data.title;
       data.comment = widget.item?.comment ?? data.comment;
