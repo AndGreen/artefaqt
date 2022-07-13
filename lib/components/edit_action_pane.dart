@@ -7,18 +7,21 @@ class EditActionPane extends StatelessWidget {
       required this.child,
       required this.onEdit,
       required this.onDelete,
+      this.extentRatio = 0.5,
       required})
       : super(key: key);
 
   final Widget child;
   final Function onEdit;
   final Function onDelete;
+  final double extentRatio;
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
       key: key,
       endActionPane: ActionPane(
+        extentRatio: extentRatio,
         motion: const DrawerMotion(),
         children: [
           SlidableAction(

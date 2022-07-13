@@ -109,6 +109,7 @@ class _ListScreenState extends State<ListScreen> {
                         itemCount: items.length,
                         itemBuilder: (BuildContext context, int index) {
                           return EditActionPane(
+                            extentRatio: 0.45,
                             onEdit: () {
                               showCupertinoModalBottomSheet(
                                 context: context,
