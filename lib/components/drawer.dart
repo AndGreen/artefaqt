@@ -28,56 +28,66 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: SlidableAutoCloseBehavior(
         closeWhenOpened: true,
         closeWhenTapped: true,
-        child: ListView(
-          children: [
-            const SizedBox(
-                height: 64.0,
-                child: DrawerHeader(
-                  margin: EdgeInsets.all(0.0),
-                  decoration: BoxDecoration(
-                      // color: Colors.blue
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(
+                  height: 64.0,
+                  child: DrawerHeader(
+                    margin: EdgeInsets.all(0.0),
+                    decoration: BoxDecoration(
+                        // color: Colors.blue
 
-                      ),
-                  child: Center(
-                      child: Text('Artefaqt',
-                          style: TextStyle(color: Colors.grey, fontSize: 16))),
-                )),
-            ReorderableListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              onReorderStart: (int index) {
-                setState(() {
-                  isOnReorder = true;
-                });
-              },
-              onReorder: (int oldIndex, int nextIndex) {
-                context
-                    .read<UserState>()
-                    .reorderCategories(oldIndex, nextIndex);
+                        ),
+                    child: Center(
+                        child: Text('Artefaqt',
+                            style:
+                                TextStyle(color: Colors.grey, fontSize: 16))),
+                  )),
+              Expanded(
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: ReorderableListView(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    onReorderStart: (int index) {
+                      setState(() {
+                        isOnReorder = true;
+                      });
+                    },
+                    onReorder: (int oldIndex, int nextIndex) {
+                      context
+                          .read<UserState>()
+                          .reorderCategories(oldIndex, nextIndex);
 
-                isOnReorder = false;
-              },
-              children: [
-                ...categories.map((e) => DrawerTile(
-                    key: Key(e.id),
-                    id: e.id,
-                    selected:
-                        context.watch<GlobalState>().selectedCategory == e &&
-                            !isOnReorder,
-                    category: e,
-                    title: e.title.toCapitalized()))
-              ],
-            ),
-            AddButton(
-              title: "New collection",
-              onPressed: () {
-                showCupertinoModalBottomSheet(
-                  context: context,
-                  builder: (context) => const NewCategoryForm(),
-                );
-              },
-            )
-          ],
+                      isOnReorder = false;
+                    },
+                    children: [
+                      ...categories.map((e) => DrawerTile(
+                          key: Key(e.id),
+                          id: e.id,
+                          selected:
+                              context.watch<GlobalState>().selectedCategory ==
+                                      e &&
+                                  !isOnReorder,
+                          category: e,
+                          title: e.title.toCapitalized()))
+                    ],
+                  ),
+                ),
+              ),
+              AddButton(
+                title: "New collection",
+                onPressed: () {
+                  showCupertinoModalBottomSheet(
+                    context: context,
+                    builder: (context) => const NewCategoryForm(),
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
