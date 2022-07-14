@@ -135,12 +135,13 @@ class _ListScreenState extends State<ListScreen> {
                                           vertical: 20.0),
                                   child: Row(children: [
                                     Expanded(child: Text(items[index].title)),
-                                    Row(children: [
-                                      Text(items[index].rating.toString()),
-                                      const Padding(
-                                          padding: EdgeInsets.only(left: 6),
-                                          child: Icon(Icons.star))
-                                    ])
+                                    if (items[index].rating > 0)
+                                      Row(children: [
+                                        Text(items[index].rating.toString()),
+                                        const Padding(
+                                            padding: EdgeInsets.only(left: 6),
+                                            child: Icon(Icons.star))
+                                      ])
                                   ]),
                                 )),
                           );
