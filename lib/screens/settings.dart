@@ -21,18 +21,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: SettingsList(
           contentPadding: const EdgeInsets.all(0),
           darkTheme: SettingsThemeData(
+              settingsSectionBackground:
+                  Theme.of(context).inputDecorationTheme.fillColor,
               settingsListBackground: Theme.of(context).canvasColor),
           sections: [
             SettingsSection(
-              title: const Text('Data'),
+              // title: const Text('Data'),
               tiles: <SettingsTile>[
                 SettingsTile(
                   // leading: const Icon(Icons.arrow_upward),
-                  onPressed: (context) => {},
+                  onPressed: (context) {},
                   title: const Text('Backup to file'),
                 ),
                 SettingsTile(
                   // leading: const Icon(Icons.arrow_downward),
+                  onPressed: (context) {},
                   title: const Text('Restore backup'),
                 ),
               ],

@@ -68,7 +68,9 @@ class _ItemFormState extends State<ItemForm> {
                       children: [
                         CupertinoFormSection.insetGrouped(
                             decoration: BoxDecoration(
-                              color: const Color(0xff262626),
+                              color: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .fillColor,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             backgroundColor: Colors.transparent,
