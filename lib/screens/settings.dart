@@ -21,6 +21,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: SettingsList(
           contentPadding: const EdgeInsets.all(0),
           darkTheme: SettingsThemeData(
+              dividerColor: Theme.of(context).canvasColor,
               settingsSectionBackground:
                   Theme.of(context).inputDecorationTheme.fillColor,
               settingsListBackground: Theme.of(context).canvasColor),
