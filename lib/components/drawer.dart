@@ -2,6 +2,7 @@
 import 'package:artefaqt/state/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:artefaqt/utils.dart';
@@ -32,18 +33,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(
+              SizedBox(
                   height: 64.0,
                   child: DrawerHeader(
-                    margin: EdgeInsets.all(0.0),
-                    decoration: BoxDecoration(
-                        // color: Colors.blue
-
-                        ),
-                    child: Center(
-                        child: Text('Artefaqt',
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 16))),
+                    margin: const EdgeInsets.all(0.0),
+                    padding: const EdgeInsets.only(left: 20, right: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Artefaqt',
+                            style: TextStyle(color: Colors.grey, fontSize: 16)),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pushNamed('/settings');
+                            },
+                            icon: const Icon(
+                              Ionicons.settings_outline,
+                              color: Colors.blue,
+                            ))
+                      ],
+                    ),
                   )),
               Expanded(
                 child: Material(

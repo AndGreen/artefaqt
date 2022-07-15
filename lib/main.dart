@@ -1,3 +1,4 @@
+import 'package:artefaqt/screens/settings.dart';
 import 'package:artefaqt/services/database.dart';
 import 'package:artefaqt/state/global.dart';
 import 'package:artefaqt/state/user.dart';
@@ -47,7 +48,8 @@ class MyApp extends StatelessWidget {
               return null;
             },
             routes: <String, WidgetBuilder>{
-              '/detail': (context) => const DetailScreen()
+              '/detail': (context) => const DetailScreen(),
+              '/settings': (context) => const SettingsScreen(),
             },
             theme: ThemeData(
               primaryColor: Colors.green,
