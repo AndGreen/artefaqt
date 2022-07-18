@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:artefaqt/services/database.dart';
 import 'package:artefaqt/state/global.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/item.dart';
@@ -17,22 +23,45 @@ class UserState extends ChangeNotifier {
   late UserData userData = UserData(items: [], categories: defaultCategories);
 
   late GlobalState _globalState;
-  late Database _database;
 
-  UserState({required Database database, required BuildContext context}) {
-    _database = database;
+  UserState({required BuildContext context}) {
     _globalState = Provider.of<GlobalState>(context, listen: false);
-    _restoreData();
+    _restoreDataHive();
   }
 
-  _restoreData() async {
-    var newUserData = await restoreUserData(_database);
+  _restoreDataHive() async {
+    var newUserData = await restoreUserData();
     if (newUserData.items.isNotEmpty) userData.items = newUserData.items;
     if (newUserData.categories.isNotEmpty) {
       userData.categories = newUserData.categories;
     }
     _globalState.updateSelectedCategory(userData.categories.first);
     notifyListeners();
+  }
+
+  saveDataToFile() async {
+    Directory documents = await getApplicationDocumentsDirectory();
+    File backupFile = File('${documents.path}/backup.json');
+    var json = serializeUserDataToString();
+    await backupFile.writeAsString(json);
+    await Share.shareFiles([backupFile.path]);
+  }
+
+  restoreDataFromFile(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      try {
+        File file = File(result.files.single.path!);
+        var json = await file.readAsString();
+        var data = UserData.fromJson(jsonDecode(json));
+        userData = data;
+        _saveData();
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
   }
 
   List<Item> _getSelectedItems() {
@@ -63,7 +92,7 @@ class UserState extends ChangeNotifier {
   }
 
   _saveData() {
-    updateUserData(_database, userData);
+    updateUserData(userData);
     notifyListeners();
   }
 

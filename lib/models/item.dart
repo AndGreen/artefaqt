@@ -1,11 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:hive/hive.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 
 part 'item.g.dart';
 
+typedef Json = Map<String, dynamic>;
+
 enum SortModes { date, alpha, rating }
 
+@JsonSerializable()
 @HiveType(typeId: 1)
 class Category {
   @HiveField(0)
@@ -20,10 +25,14 @@ class Category {
     required this.title,
     this.iconName,
   });
+
+  factory Category.fromJson(Json json) => _$CategoryFromJson(json);
+  Json toJson() => _$CategoryToJson(this);
 }
 
 const loadingId = 'loading';
 
+@JsonSerializable()
 @HiveType(typeId: 0)
 class Item {
   @HiveField(0)
@@ -43,8 +52,12 @@ class Item {
     required this.comment,
     required this.rating,
   });
+
+  factory Item.fromJson(Json json) => _$ItemFromJson(json);
+  Json toJson() => _$ItemToJson(this);
 }
 
+@JsonSerializable()
 class UserData {
   late List<Item> items;
   late List<Category> categories;
@@ -52,4 +65,7 @@ class UserData {
     required this.items,
     required this.categories,
   });
+
+  factory UserData.fromJson(Json json) => _$UserDataFromJson(json);
+  Json toJson() => _$UserDataToJson(this);
 }

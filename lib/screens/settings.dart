@@ -1,6 +1,10 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:artefaqt/components/app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
+
+import '../state/user.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -31,12 +35,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
               tiles: <SettingsTile>[
                 SettingsTile(
                   // leading: const Icon(Icons.arrow_upward),
-                  onPressed: (context) {},
+                  onPressed: (context) {
+                    context.read<UserState>().saveDataToFile();
+                  },
                   title: const Text('Backup to file'),
                 ),
                 SettingsTile(
                   // leading: const Icon(Icons.arrow_downward),
-                  onPressed: (context) {},
+                  onPressed: (context) async {
+                    var res = await context
+                        .read<UserState>()
+                        .restoreDataFromFile(context);
+
+                    if (!mounted) return;
+                    if (res != null) {
+                      if (!res) {
+                        Flushbar(
+                          // title: "Not corrected file",
+                          message: "Not corrected backup file",
+                          duration: const Duration(seconds: 3),
+                          flushbarStyle: FlushbarStyle.GROUNDED,
+                          backgroundColor: Colors.red,
+                        ).show(context);
+                      }
+                      if (res) {
+                        Flushbar(
+                          // title: "Not corrected file",
+                          message: "Backup restored",
+                          duration: const Duration(seconds: 3),
+                          flushbarStyle: FlushbarStyle.GROUNDED,
+                          backgroundColor: Colors.green,
+                        ).show(context);
+                      }
+                    }
+                  },
                   title: const Text('Restore backup'),
                 ),
               ],

@@ -90,3 +90,48 @@ class ItemAdapter extends TypeAdapter<Item> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Category _$CategoryFromJson(Map<String, dynamic> json) => Category(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      iconName: json['iconName'] as String?,
+    );
+
+Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
+      'id': instance.id,
+      'title': instance.title,
+      'iconName': instance.iconName,
+    };
+
+Item _$ItemFromJson(Map<String, dynamic> json) => Item(
+      category: Category.fromJson(json['category'] as Map<String, dynamic>),
+      title: json['title'] as String,
+      comment: json['comment'] as String,
+      rating: (json['rating'] as num).toDouble(),
+    )..id = json['id'] as String;
+
+Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+      'id': instance.id,
+      'category': instance.category,
+      'title': instance.title,
+      'comment': instance.comment,
+      'rating': instance.rating,
+    };
+
+UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(
+      items: (json['items'] as List<dynamic>)
+          .map((e) => Item.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      categories: (json['categories'] as List<dynamic>)
+          .map((e) => Category.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
+      'items': instance.items,
+      'categories': instance.categories,
+    };

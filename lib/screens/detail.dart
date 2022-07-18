@@ -53,7 +53,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ignoreGestures: true,
                   itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                   itemBuilder: (context, _) => const Icon(
-                    Icons.star,
+                    Icons.star_rounded,
                     color: Colors.amber,
                   ),
                   onRatingUpdate: (rating) {},

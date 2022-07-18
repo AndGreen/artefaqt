@@ -10,19 +10,19 @@ import 'package:artefaqt/screens/list.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  var db = await initDatabase();
+  await initHiveDatabase();
+
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent, // transparent status bar
   ));
 
-  return runApp(MyApp(database: db));
+  return runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Database database;
-  const MyApp({Key? key, required this.database}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +32,7 @@ class MyApp extends StatelessWidget {
             create: (context) => GlobalState(),
           ),
           ChangeNotifierProvider<UserState>(
-              create: (context) =>
-                  UserState(database: database, context: context))
+              create: (context) => UserState(context: context))
         ],
         child: MaterialApp(
             title: 'welcome',
