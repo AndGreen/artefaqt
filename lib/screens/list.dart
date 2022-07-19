@@ -1,5 +1,5 @@
 import 'package:artefaqt/components/add_button.dart';
-import 'package:artefaqt/components/custom_cupertino_scaffold.dart';
+import 'package:artefaqt/components/material_cupertino_scaffold.dart';
 import 'package:artefaqt/components/edit_action_pane.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:artefaqt/state/global.dart';

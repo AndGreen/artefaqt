@@ -1,4 +1,4 @@
-import 'package:artefaqt/components/custom_cupertino_scaffold.dart';
+import 'package:artefaqt/components/material_cupertino_scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/custom_cupertino_scaffold.dart';
+import '../../components/material_cupertino_scaffold.dart';
 import '../../models/item.dart';
 import '../../state/user.dart';
 
