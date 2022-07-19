@@ -1,3 +1,4 @@
+import 'package:artefaqt/components/custom_cupertino_scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,19 +38,17 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
   @override
   Widget build(BuildContext context) {
     var userContext = context.watch<UserState>();
-    return Scaffold(
+    return MaterialCupertinoScaffold(
+      isForm: true,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(headerHeight),
           child: SizedBox(
               height: headerHeight,
               child: CupertinoNavigationBar(
-                backgroundColor: const Color(0xff262626),
                 leading: Container(),
-                middle: Text(
-                    widget.category != null
-                        ? 'Edit collection'
-                        : 'New collection',
-                    style: const TextStyle(color: Colors.white)),
+                middle: Text(widget.category != null
+                    ? 'Edit collection'
+                    : 'New collection'),
               ))),
       body: SafeArea(
           child: Form(
@@ -61,16 +60,13 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         CupertinoFormSection.insetGrouped(
-                            decoration: BoxDecoration(
-                              color: const Color(0xff262626),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
                             backgroundColor: Colors.transparent,
                             margin: const EdgeInsets.all(0),
                             children: [
                               CupertinoFormRow(
-                                  prefix: const Text('Title',
-                                      style: TextStyle(color: Colors.white)),
+                                  prefix: const Text(
+                                    'Title',
+                                  ),
                                   child: CupertinoTextFormFieldRow(
                                     textCapitalization:
                                         TextCapitalization.sentences,
@@ -80,7 +76,6 @@ class _NewCategoryFormState extends State<NewCategoryForm> {
                                     initialValue: data.title,
                                     autofocus: true,
                                     placeholder: 'Collection name',
-                                    style: const TextStyle(color: Colors.white),
                                   )),
                             ]),
                         const SizedBox(height: 20),

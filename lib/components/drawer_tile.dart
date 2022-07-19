@@ -55,8 +55,7 @@ class DrawerTile extends StatelessWidget {
                 )
               : const SizedBox.shrink(), // Just empty Widget
           selected: selected,
-          selectedColor: Colors.white,
-          selectedTileColor: Colors.grey[800],
+          selectedTileColor: Theme.of(context).hoverColor,
           onTap: () {
             context.read<GlobalState>().updateSelectedCategory(category);
             Navigator.pop(context);

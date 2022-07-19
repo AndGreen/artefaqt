@@ -42,7 +42,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Artefaqt',
-                            style: TextStyle(color: Colors.grey, fontSize: 16)),
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w600)),
                         IconButton(
                             onPressed: () {
                               Navigator.of(context).pop();
@@ -50,7 +53,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             },
                             icon: const Icon(
                               Ionicons.settings_outline,
-                              color: Colors.blue,
                             ))
                       ],
                     ),

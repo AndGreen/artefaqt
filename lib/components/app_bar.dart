@@ -8,11 +8,9 @@ import 'package:provider/provider.dart';
 import '../models/item.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  const CustomAppBar({Key? key, this.title, this.showMenuButton = false})
-      : super(key: key);
+  const CustomAppBar({Key? key, this.title}) : super(key: key);
 
   final String? title;
-  final bool? showMenuButton;
 
   Widget sortModeIcon(SortModes sortMode) {
     Map<SortModes, IconData> icons = {
@@ -28,40 +26,25 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     var sortMode = context.watch<GlobalState>().sortMode;
 
-    if (showMenuButton == false) {
-      return CupertinoNavigationBar(
-        // Try removing opacity to observe the lack of a blur effect and of sliding content.
-        backgroundColor: Colors.black45,
-
-        middle: Text(
-          title ?? 'artefaqt',
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(color: Colors.white),
-        ),
-      );
-    } else {
-      return CupertinoNavigationBar(
-          // Try removing opacity to observe the lack of a blur effect and of sliding content.
-          backgroundColor: Colors.grey[900],
-          trailing: GestureDetector(
+    return CupertinoNavigationBar(
+        transitionBetweenRoutes: false,
+        trailing: GestureDetector(
+            onTap: () {
+              context.read<GlobalState>().changeSortMode(sortMode.toogle());
+            },
+            child: sortModeIcon(sortMode)),
+        leading: Padding(
+          padding: const EdgeInsets.only(right: 8.0),
+          child: GestureDetector(
               onTap: () {
-                context.read<GlobalState>().changeSortMode(sortMode.toogle());
+                Scaffold.of(context).openDrawer();
               },
-              child: sortModeIcon(sortMode)),
-          leading: Padding(
-            padding: const EdgeInsets.only(right: 8.0),
-            child: GestureDetector(
-                onTap: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                child: const Icon(Ionicons.menu_outline)),
-          ),
-          middle: Text(
-            context.watch<GlobalState>().selectedCategory.title.toCapitalized(),
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(color: Colors.white),
-          ));
-    }
+              child: const Icon(Ionicons.menu_outline)),
+        ),
+        middle: Text(
+          context.watch<GlobalState>().selectedCategory.title.toCapitalized(),
+          overflow: TextOverflow.ellipsis,
+        ));
   }
 
   @override

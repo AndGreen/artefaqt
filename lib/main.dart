@@ -2,6 +2,7 @@ import 'package:artefaqt/screens/settings.dart';
 import 'package:artefaqt/services/database.dart';
 import 'package:artefaqt/state/global.dart';
 import 'package:artefaqt/state/user.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter/services.dart';
@@ -50,13 +51,10 @@ class MyApp extends StatelessWidget {
               '/detail': (context) => const DetailScreen(),
               '/settings': (context) => const SettingsScreen(),
             },
-            theme: ThemeData(
-              primaryColor: Colors.green,
-              inputDecorationTheme:
-                  const InputDecorationTheme(fillColor: Color(0xff262626)),
-              textTheme:
-                  const TextTheme(bodyText2: TextStyle(color: Colors.white)),
-              brightness: Brightness.dark,
-            )));
+            theme: FlexThemeData.light(scheme: FlexScheme.brandBlue),
+            darkTheme: FlexThemeData.dark(
+                scheme: FlexScheme.deepBlue,
+                background: const Color(0xFF292929)),
+            themeMode: ThemeMode.system));
   }
 }

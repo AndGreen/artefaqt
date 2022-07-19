@@ -1,4 +1,5 @@
 import 'package:artefaqt/components/add_button.dart';
+import 'package:artefaqt/components/custom_cupertino_scaffold.dart';
 import 'package:artefaqt/components/edit_action_pane.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:artefaqt/state/global.dart';
@@ -50,25 +51,24 @@ class _ListScreenState extends State<ListScreen> {
         context.watch<UserState>().getFilteredItems(_textController.text);
 
     return selectedCategory.id == loadingId
-        ? Container(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            child: const Center(child: CircularProgressIndicator()))
-        : Scaffold(
-            // backgroundColor: Colors.black,
+        ? const Center(child: CircularProgressIndicator())
+        : MaterialCupertinoScaffold(
             floatingActionButton: FloatingActionButton(
-              backgroundColor: Colors.grey,
               onPressed: () {
                 showCupertinoModalBottomSheet(
                   context: context,
                   builder: (context) => const ItemForm(),
                 );
               },
-              child: const Icon(Icons.add),
+              child: Icon(
+                Icons.add,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.black
+                    : Colors.white,
+              ),
             ),
             drawer: const CustomDrawer(),
-            appBar: const CustomAppBar(
-              showMenuButton: true,
-            ),
+            appBar: const CustomAppBar(),
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -87,7 +87,6 @@ class _ListScreenState extends State<ListScreen> {
                           _filterInput = value;
                         });
                       },
-                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                 if (items.isEmpty && _filterInput != null)

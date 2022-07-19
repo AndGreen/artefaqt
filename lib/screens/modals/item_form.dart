@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
+import '../../components/custom_cupertino_scaffold.dart';
 import '../../models/item.dart';
 import '../../state/user.dart';
 
@@ -45,17 +46,17 @@ class _ItemFormState extends State<ItemForm> {
   @override
   Widget build(BuildContext context) {
     var userContext = context.watch<UserState>();
-    return Scaffold(
+    return MaterialCupertinoScaffold(
+      isForm: true,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(headerHeight),
           child: SizedBox(
               height: headerHeight,
               child: CupertinoNavigationBar(
-                backgroundColor: const Color(0xff262626),
                 leading: Container(),
                 middle: Text(
-                    widget.item != null ? 'Edit artefaqt' : 'New artefaqt',
-                    style: const TextStyle(color: Colors.white)),
+                  widget.item != null ? 'Edit artefaqt' : 'New artefaqt',
+                ),
               ))),
       body: SafeArea(
           child: Form(
@@ -67,18 +68,11 @@ class _ItemFormState extends State<ItemForm> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         CupertinoFormSection.insetGrouped(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .inputDecorationTheme
-                                  .fillColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
                             backgroundColor: Colors.transparent,
                             margin: const EdgeInsets.all(0),
                             children: [
                               CupertinoFormRow(
-                                  prefix: const Text('Title',
-                                      style: TextStyle(color: Colors.white)),
+                                  prefix: const Text('Title'),
                                   child: CupertinoTextFormFieldRow(
                                     textCapitalization:
                                         TextCapitalization.sentences,
@@ -88,11 +82,9 @@ class _ItemFormState extends State<ItemForm> {
                                     initialValue: data.title,
                                     autofocus: true,
                                     placeholder: 'Artefaqt name',
-                                    style: const TextStyle(color: Colors.white),
                                   )),
                               CupertinoFormRow(
-                                  prefix: const Text('Comment',
-                                      style: TextStyle(color: Colors.white)),
+                                  prefix: const Text('Comment'),
                                   child: CupertinoTextFormFieldRow(
                                     textCapitalization:
                                         TextCapitalization.sentences,
@@ -105,11 +97,9 @@ class _ItemFormState extends State<ItemForm> {
                                     initialValue: data.comment,
                                     autofocus: true,
                                     placeholder: 'Your expressions',
-                                    style: const TextStyle(color: Colors.white),
                                   )),
                               CupertinoFormRow(
-                                  prefix: const Text('Raiting',
-                                      style: TextStyle(color: Colors.white)),
+                                  prefix: const Text('Raiting'),
                                   child: RatingBar.builder(
                                     initialRating: data.rating,
                                     minRating: 0,

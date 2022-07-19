@@ -1,4 +1,5 @@
-import 'package:artefaqt/components/app_bar.dart';
+import 'package:artefaqt/components/custom_cupertino_scaffold.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,9 +29,13 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments as DetailArguments;
 
-    return Scaffold(
-        appBar: CustomAppBar(
-          title: args.item.title,
+    return MaterialCupertinoScaffold(
+        isForm: true,
+        appBar: CupertinoNavigationBar(
+          middle: Text(
+            args.item.title,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         body: Stack(
           children: [

@@ -28,7 +28,7 @@ class EditActionPane extends StatelessWidget {
               onPressed: (context) {
                 onEdit();
               },
-              backgroundColor: const Color.fromARGB(255, 84, 84, 84),
+              backgroundColor: Theme.of(context).toggleableActiveColor,
               foregroundColor: Colors.white,
               icon: Icons.edit,
               label: 'Edit'),
