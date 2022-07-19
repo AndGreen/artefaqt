@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:artefaqt/state/user.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ionicons/ionicons.dart';
@@ -43,9 +44,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       children: [
                         const Text('Artefaqt',
                             style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w600)),
+                              fontSize: 16,
+                              color: CupertinoColors.systemGrey,
+                            )),
                         IconButton(
                             onPressed: () {
                               Navigator.of(context).pop();

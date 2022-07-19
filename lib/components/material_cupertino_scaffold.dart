@@ -27,7 +27,7 @@ class MaterialCupertinoScaffold extends StatelessWidget {
         child: Scaffold(
             backgroundColor:
                 isForm != null && theme.brightness == Brightness.light
-                    ? const Color(0xffF2F2F6)
+                    ? CupertinoColors.extraLightBackgroundGray
                     : theme.backgroundColor,
             body: body,
             appBar: appBar,

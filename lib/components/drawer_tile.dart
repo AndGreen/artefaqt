@@ -45,7 +45,6 @@ class DrawerTile extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
           title: Text(title,
               style: const TextStyle(
-                fontWeight: FontWeight.w500,
                 fontSize: 15,
               )),
           trailing: selected
