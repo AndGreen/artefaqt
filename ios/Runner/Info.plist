@@ -48,6 +48,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<true/>
+	<string>For backup app data to a file</string>
 </dict>
 </plist>
