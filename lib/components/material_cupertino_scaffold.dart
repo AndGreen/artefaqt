@@ -20,18 +20,20 @@ class MaterialCupertinoScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    final isLightTheme = theme.brightness == Brightness.light;
+
     return CupertinoTheme(
-        data: CupertinoThemeData(
-          primaryColor: theme.primaryColor,
-        ),
-        child: Scaffold(
-            backgroundColor:
-                isForm != null && theme.brightness == Brightness.light
-                    ? CupertinoColors.extraLightBackgroundGray
-                    : theme.backgroundColor,
-            body: body,
-            appBar: appBar,
-            drawer: drawer,
-            floatingActionButton: floatingActionButton));
+      data: CupertinoThemeData(
+        primaryColor: theme.primaryColor,
+      ),
+      child: Scaffold(
+          backgroundColor: isForm != null && isLightTheme
+              ? CupertinoColors.extraLightBackgroundGray
+              : theme.backgroundColor,
+          body: body,
+          appBar: appBar,
+          drawer: drawer,
+          floatingActionButton: floatingActionButton),
+    );
   }
 }

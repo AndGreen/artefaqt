@@ -1,21 +1,26 @@
+import 'package:artefaqt/screens/onboarding.dart';
 import 'package:artefaqt/screens/settings.dart';
 import 'package:artefaqt/services/database.dart';
+import 'package:artefaqt/services/shared_preferences.dart';
 import 'package:artefaqt/state/global.dart';
 import 'package:artefaqt/state/user.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:artefaqt/screens/list.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  await initHiveDatabase();
-
   WidgetsFlutterBinding.ensureInitialized();
+  await initHiveDatabase();
+  await initSharedPreferences();
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent, // transparent status bar
   ));
 
@@ -27,6 +32,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isOnboarded =
+        GetIt.I<SharedPreferences>().getBool(isOnboardingPref) ?? false;
+    final brightness = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+        .platformBrightness;
+
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<GlobalState>(
@@ -35,26 +45,33 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<UserState>(
               create: (context) => UserState(context: context))
         ],
-        child: MaterialApp(
-            title: 'welcome',
-            debugShowCheckedModeBanner: false,
-            onGenerateRoute: (RouteSettings settings) {
-              switch (settings.name) {
-                case '/':
-                  return MaterialWithModalsPageRoute(
-                      settings: settings,
-                      builder: (context) => const ListScreen());
-              }
-              return null;
-            },
-            routes: <String, WidgetBuilder>{
-              '/detail': (context) => const DetailScreen(),
-              '/settings': (context) => const SettingsScreen(),
-            },
-            theme: FlexThemeData.light(scheme: FlexScheme.brandBlue),
-            darkTheme: FlexThemeData.dark(
-                scheme: FlexScheme.deepBlue,
-                background: const Color(0xFF292929)),
-            themeMode: ThemeMode.system));
+        child: Container(
+          color: brightness == Brightness.light
+              ? Colors.white
+              : CupertinoColors.darkBackgroundGray,
+          child: MaterialApp(
+              title: 'welcome',
+              debugShowCheckedModeBanner: false,
+              initialRoute: !isOnboarded ? '/onboarding' : '/',
+              onGenerateRoute: (RouteSettings settings) {
+                switch (settings.name) {
+                  case '/':
+                    return MaterialWithModalsPageRoute(
+                        settings: settings,
+                        builder: (context) => const ListScreen());
+                }
+                return null;
+              },
+              routes: <String, WidgetBuilder>{
+                '/onboarding': (context) => const Onboarding(),
+                '/detail': (context) => const DetailScreen(),
+                '/settings': (context) => const SettingsScreen(),
+              },
+              theme: FlexThemeData.light(scheme: FlexScheme.brandBlue),
+              darkTheme: FlexThemeData.dark(
+                  scheme: FlexScheme.deepBlue,
+                  background: CupertinoColors.darkBackgroundGray),
+              themeMode: ThemeMode.system),
+        ));
   }
 }
