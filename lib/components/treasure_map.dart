@@ -9,16 +9,18 @@ class TreasureMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const SizedBox(
+        SizedBox(
             height: 140,
             child: Center(
               child: Text('Start your journey',
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 23,
-                      color: Colors.grey)),
+                      color: Theme.of(context).highlightColor)),
             )),
-        Center(child: Image.asset('assets/empty_map.png')),
+        Opacity(
+            opacity: 0.3,
+            child: Center(child: Image.asset('assets/empty_map.png'))),
       ],
     );
   }
