@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:artefaqt/screens/detail.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:artefaqt/screens/list.dart';
@@ -16,14 +17,17 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // -- settings up app start
   await initHiveDatabase();
   await initSharedPreferences();
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent, // transparent status bar
   ));
-
+  // -- settings up app finish
+  FlutterNativeSplash.remove();
   return runApp(const MyApp());
 }
 
@@ -46,6 +50,7 @@ class MyApp extends StatelessWidget {
               create: (context) => UserState(context: context))
         ],
         child: Container(
+          // canvas background of app
           color: brightness == Brightness.light
               ? Colors.white
               : CupertinoColors.darkBackgroundGray,
